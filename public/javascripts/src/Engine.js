@@ -3,7 +3,7 @@
 var Engine = function () {
 
 // private attributes and methods
-    var player, currentPlayer, board;
+    var player, currentPlayer, board, selected, nbSelected;
 
     var foreach3D = function (n1, n2, n3, callback) {
         var i, j, k;
@@ -63,16 +63,52 @@ var Engine = function () {
     var initialization = function () {
         player = {player1 : 1, player2 : 2};
         currentPlayer = player.player1;
+        selected = "";
+        nbSelected = 0;
         initializationBoard();
-        drawBoard();
     };
 
+    var getIJFromStr = function (str) {
+        var column = str.charCodeAt(0) - 65;
+        var line = str.charCodeAt(1) - 49;
+
+        return {"i" : line, "j" : column};
+    };
 
 // public methods
     this.getCurrentPlayer = function () {
         return currentPlayer;
     };
 
+    this.getCaseBoard = function (i, j, k) {
+        return board[i][j][k];
+    };
+
+    this.selectToken = function (position, number) {
+        selected = position;
+        nbSelected = number;
+    };
+
+    this.unselectToken = function () {
+        selected = "";
+        nbSelected = 0;
+    };
+
+    this.play = function (position) {
+        var pos = getIJFromStr(position), i;
+        if(selected !== "") {
+            var selectedPos = getIJFromStr(selected), tmp;
+            var maxSelectedPos = getNumberTokenAtIJ(selectedPos.i, selectedPos.j);
+            for(i = maxSelectedPos - nbSelected ; i < maxSelectedPos ; i++) {
+                board[pos.i][pos.j][getNumberTokenAtIJ(pos.i, pos.j)] = board[selectedPos.i][selectedPos.j][i];
+                board[selectedPos.i][selectedPos.j][i] = 0;
+            }
+        }
+        else {
+            board[pos.i][pos.j][0] = currentPlayer;
+        }
+        drawBoard();
+    };
 
     initialization();
 };
