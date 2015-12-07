@@ -1,0 +1,11 @@
+extends layout
+block content
+   h1= title
+   h2 Register
+   form(name="login", action="/signup", method="post")
+      input(type="text", name="username")
+      br
+      input(type="password", name="password")
+      input(type="submit",name="signup",id="signup", value="register")
+   p
+      a(href ="/signin" title='sign up') Sign In
