@@ -75,6 +75,15 @@ var Engine = function () {
         return {"i" : line, "j" : column};
     };
 
+    var switchPlayer = function () {
+        if(currentPlayer === player.player1) {
+            currentPlayer = player.player2;
+        }
+        else {
+            currentPlayer = player.player1;
+        }
+    };
+
 // public methods
     this.getCurrentPlayer = function () {
         return currentPlayer;
@@ -97,16 +106,18 @@ var Engine = function () {
     this.play = function (position) {
         var pos = getIJFromStr(position), i;
         if(selected !== "") {
-            var selectedPos = getIJFromStr(selected), tmp;
+            var selectedPos = getIJFromStr(selected);
             var maxSelectedPos = getNumberTokenAtIJ(selectedPos.i, selectedPos.j);
             for(i = maxSelectedPos - nbSelected ; i < maxSelectedPos ; i++) {
                 board[pos.i][pos.j][getNumberTokenAtIJ(pos.i, pos.j)] = board[selectedPos.i][selectedPos.j][i];
                 board[selectedPos.i][selectedPos.j][i] = 0;
             }
+            this.unselectToken();
         }
         else {
             board[pos.i][pos.j][0] = currentPlayer;
         }
+        switchPlayer();
         drawBoard();
     };
 
