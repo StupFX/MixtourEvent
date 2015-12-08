@@ -1,0 +1,22 @@
+extends layout
+
+block nav
+  li
+    a(href='/') Accueil
+  li
+    a(href='/faq') Règles / FAQ
+  li.active
+    a(href='/contact') Contact
+
+block content
+  .row
+    .col-md-12.contact
+      h1 À propos de l'entreprise
+      p
+        | Il s'agit de l'entreprise Dieter Stein qui organise le jeu concours autour du jeu Mixtour.
+        br
+        a(href='#', style='text-decoration: underline') Visiter le site web
+      form(method='post')
+        input.input(type='email', name='email', placeholder='Adresse e-mail (obligatoire)')
+        textarea.input(placeholder='Votre message')
+        input.btn.btn-lg.btn-default(type='submit', value='Envoyer')

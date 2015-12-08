@@ -1,0 +1,76 @@
+extends layout
+
+block nav
+  li
+    a(href='/') Accueil
+  li.active
+    a(href='/faq') Règles / FAQ
+  li
+    a(href='/contact') Contact
+
+block content
+  .row
+    .col-md-12.faq
+      #accordion.panel-group(role='tablist', aria-multiselectable='true')
+        div
+          #headingOne.panel-heading(role='tab')
+            h4.panel-title
+              a(role='button', data-toggle='collapse', data-parent='#accordion', href='#collapseOne', aria-expanded='true', aria-controls='collapseOne')
+                | Règles du jeu
+          #collapseOne.panel-collapse.collapse.in(role='tabpanel', aria-labelledby='headingOne')
+            .panel-body
+              h3 Matériel
+              p
+                | Mixtour est composé d’un plateau de 5x5 cases et de 2x25 pions blanc et bleu.
+              h3 Objectif
+              p
+                | Les joueurs doivent former des piles d’au moins cinq pions, dont le sommet est occupé par un pion de leur propre couleur.
+              p
+                | La pile est alors retirée du plateau et les pions retournent à la réserve.
+              p
+                | Le joueur qui possédait le pion supérieur de la pile marque alors un point.
+              p
+                | La partie est gagné par le premier joueur qui atteint 5 points.
+              h3 Déroulement
+              p
+                | A son  tour de jeu, un joueur peut soit :
+                br
+                |                           - Ajouter un pion sur une case vide : Le joueur place un pion de sa couleur sur une case libre de son choix.
+                br
+                |                           - Déplacer une pile sur le jeu
+              p
+                | Le joueur choisit une pile et déplace un ou plusieurs pions de cette pile.
+              p
+                | Les pions sont pris du haut de la pile.
+              p
+                | Les pions se déplacent en ligne droite, horizontalement ou verticalement et diagonalement.
+              p
+                | Un joueur peut déplacer une pile de n’importe quelle couleur.
+              p
+                | Il est interdit de revenir à la situation précédente immédiatement après un tour.
+              p
+                | Une pile ne peut pas sauter des cases occupées.
+              p
+                | Le mouvement doit terminer sur une autre pile, les pions sont placés au dessus de cette pile.
+              p
+                | Les piles de cinq pions ou plus sont retirées du jeu et rapportent un point.
+              p
+                | La hauteur de la pile qui reçoit le  mouvement détermine la distance exacte d’où peut provenir la pile qui se déplace.
+        div
+          #headingTwo.panel-heading(role='tab')
+            h4.panel-title
+              a.collapsed(role='button', data-toggle='collapse', data-parent='#accordion', href='#collapseTwo', aria-expanded='false', aria-controls='collapseTwo')
+                | Collapsible Group Item #2
+          #collapseTwo.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingTwo')
+            .panel-body
+              | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+        div
+          #headingThree.panel-heading(role='tab')
+            h4.panel-title
+              a.collapsed(role='button', data-toggle='collapse', data-parent='#accordion', href='#collapseThree', aria-expanded='false', aria-controls='collapseThree')
+                | Collapsible Group Item #3
+          #collapseThree.panel-collapse.collapse(role='tabpanel', aria-labelledby='headingThree')
+            .panel-body
+              | Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+
+

@@ -1,5 +1,16 @@
 extends layout
 
+block nav
+  li.active
+    a(href='/') Accueil
+  li
+    a(href='/faq') Règles / FAQ
+  li
+    a(href='/contact') Contact
+
 block content
-  h1= title
-  p Welcome to #{title}
+  h1.cover-heading Découvrez et gagnez un jeu Mixtour
+    p.lead
+      | Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum nec nisl in justo iaculis tristique non id erat. Nam vitae porttitor risus. Suspendisse accumsan elementum vulputate. Pellentesque vitae purus at orci aliquam volutpat ut et lacus.
+    p.lead
+      a.btn.btn-lg.btn-default(href='/login-registration') Jouer !
