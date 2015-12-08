@@ -1,12 +1,14 @@
 doctype html
 html(lang='en')
   head
+    title= title
+    link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='/socket.io/socket.io.js')
     meta(charset='utf-8')
     meta(http-equiv='X-UA-Compatible', content='IE=edge')
     meta(name='viewport', content='width=device-width, initial-scale=1')
     meta(name='description', content='Mixtour Tournament')
     meta(name='author', content='StupFX')
-    title Mixtour Event - Accueil
     // Bootstrap core CSS
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
     // IE10 viewport hack for Surface/desktop Windows 8 bug
