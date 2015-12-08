@@ -1,9 +1,55 @@
 doctype html
-html
+html(lang='en')
   head
     title= title
     link(rel='stylesheet', href='/stylesheets/style.css')
     script(src='/socket.io/socket.io.js')
-
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description', content='Mixtour Tournament')
+    meta(name='author', content='StupFX')
+    title Mixtour Event - Accueil
+    // Bootstrap core CSS
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+    // IE10 viewport hack for Surface/desktop Windows 8 bug
+    link(href='stylesheets/ie10-viewport-bug-workaround.css', rel='stylesheet')
+    link(href='stylesheets/font-awesome.css', rel='stylesheet')
+    link(href='stylesheets/style.css', rel='stylesheet')
+    // HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries
+    //if lt IE 9
+      script(src='https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js')
+      script(src='https://oss.maxcdn.com/respond/1.4.2/respond.min.js')
   body
-    block content
+    .site-wrapper
+      .site-wrapper-inner
+        .cover-container
+          .masthead.clearfix
+            .inner
+              h3.masthead-brand Mixture Event
+              nav
+                ul.nav.masthead-nav
+                  block nav
+                  
+          .inner.cover
+            
+            block content
+
+          .mastfoot
+            .inner
+              p.socialNetworks
+                a(href='#')
+                  i.fa.fa-facebook-square
+                a(href='https://twitter.com/StupFX')
+                  i.fa.fa-twitter-square
+              p Création d’un évènement autour du jeu Mixtour, by StupFX
+    //
+    // Bootstrap core JavaScript
+    // ==================================================
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+    // IE10 viewport hack for Surface/desktop Windows 8 bug
+    script(src='javascripts/ie10-viewport-bug-workaround.js')
+
+    block javascripts
+

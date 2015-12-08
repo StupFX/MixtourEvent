@@ -1,7 +1,7 @@
 extends layout
 
 block nav
-  li.active
+  li
     a(href='/') Accueil
   li
     a(href='/faq') Règles / FAQ
@@ -9,8 +9,6 @@ block nav
     a(href='/contact') Contact
 
 block content
-  h1 Game
-  p Welcome to #{user.username}
-  coucou
-    a(href ='/signout' title='sign out') Sign out
-  script(src='Socket.js')
+  .row
+    .col-md-12
+      .game

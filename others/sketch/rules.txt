@@ -1,0 +1,21 @@
+Matériels: Mixtour est composé d’un plateau de 5x5 casses et de 2x25 pions blanc et bleu.
+
+Objectif:
+    Les joueurs doivent former des piles d’au moins cinq pions, dont le sommet soit occupé par un pion de leur propre couleur.
+    La pille est alors retirée du plateau et les pions retournent  à la réserve.
+    Le joueur qui possédait le pion supérieur de la pile marque un point.
+    La partie est gagné par le premier joueur qui atteint 5 point.
+
+Déroulement:
+A son  tour de jeu, un joueur peut soit:
+    Ajouter un pion sur une case vide : Le joueur place un pion de sa couleur sur une case libre de son choix.
+    Déplacer une pile sur le jeu :
+        Le joueur choisit une pile et déplace un ou plusieurs pions de cette pile.
+        Les pions sont pris du haut de la pile.
+        Les pions se déplacent en ligne droite, horizontalement ou verticalement.
+        Un joueur peut déplacer une pile de n’importe quelle couleur.
+        Il est interdit de revenir à la situation immédiatement précédente (quand c’est possible).
+        Une pile ne peut pas sauter des cases occupées.
+        Le mouvement doit terminer sur une autre pile, les pions sont placés au-dessus de cette pile.
+        Les piles de cinq pions ou plus sont retirées du jeu et rapportent un point.
+        La hauteur de la pile qui reçoit le  mouvement détermine la distance  exacte d’où peut provenir la pile qui  se déplace.
