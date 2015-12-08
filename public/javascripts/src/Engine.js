@@ -96,6 +96,7 @@ var Engine = function () {
             else {
                 score.player2++;
             }
+            removeThePile(position);
         }
     };
 
@@ -103,6 +104,20 @@ var Engine = function () {
         var pos = getIJFromStr(position);
         var arraySize = getNumberTokenAtIJ(pos.i, pos.j);
         return board[pos.i][pos.j][arraySize-1];
+    };
+
+    var removeThePile = function (position) {
+        var pos = getIJFromStr(position), i;
+        var arraySize = getNumberTokenAtIJ(pos.i, pos.j);
+        for(i = 0 ; i < arraySize ; i++) {
+            if(board[pos.i][pos.j][i] === player.player1) {
+                nbTokens.player1++;
+            }
+            else {
+                nbTokens.player2++;
+            }
+            board[pos.i][pos.j][i] = 0;
+        }
     };
 
 // public methods
