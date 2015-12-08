@@ -1,0 +1,12 @@
+extends layout
+block content
+    h1 Sign In
+    form( action="/signin", method="post")
+        if typeof(errorMessage) !== 'undefined'
+            span= errorMessage
+        br
+        input(type="text", name="username")
+        br
+        input(type="password", name="password")
+        input(type="submit",name="signin", value="sign in")
+    a(href ='/signup' title='sign up') Register
