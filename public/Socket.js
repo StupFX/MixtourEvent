@@ -8,3 +8,4 @@ socket.on('connect', function(data) {
 socket.on('messages', function(data) {
     alert(data);
 });
+
