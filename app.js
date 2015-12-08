@@ -67,7 +67,7 @@ app.use('/users', users);
 app.get('/', route.index);
 
 //Accueil
-app.get('/accueil', route.accu);
+app.get('/accueil', route.accueil);
 
 // signin
 // GET

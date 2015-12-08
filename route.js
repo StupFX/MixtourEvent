@@ -26,7 +26,7 @@ var index = function(req, res, next) {
 //Accueil
 //GET
 
-var accu = function(req, res, next) {
+var accueil = function(req, res, next) {
     //if(req.isAuthenticated()) res.redirect('/');
     res.render('accueil', {title: 'Accueil'});
 };
@@ -103,7 +103,7 @@ var signOut = function(req, res, next) {
         notFound404(req, res, next);
     } else {
         req.logout();
-        res.redirect('/signin');
+        res.redirect('/');
     }
 };
 
@@ -135,3 +135,5 @@ module.exports.signOut = signOut;
 
 // 404 not found
 module.exports.notFound404 = notFound404;
+
+module.exports.accueil = accueil;
