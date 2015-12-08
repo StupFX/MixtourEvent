@@ -16,3 +16,10 @@ Puis-je voir le classement ?
 Je n’arrive pas à me connecter, que faire ?
 	Vérifiez votre login et votre mot de passe.
 	Si vous ne parvenez pas à vous connecter malgré la saisie de vos coordonnées, écrivez-nous via le formulaire de contact, afin que nous vous renvoyions les bons identifiants.
+
+
+Message d'intro:
+
+Laissez-vous tenter par une nouvelle expérience de jeu! Mixtour est à la fois ludique et innovant, il vous procurera une grande dose de gaitée et de divertissement. Que vous soyez, débutant, joueur occasionnel ou encore compétiteur, vous trouverez votre rythme. Conçu par Dieter Stein,  à la pointe de la technologie, cette société est entouré d’une équipe jeune et performante, vous garantissant un suivi constant et des améliorations régulières.
+A l'occasion de la sortie de Mixtour, nous organisons un immense concours !
+Êtes-vous prêt à relever le défi ?
