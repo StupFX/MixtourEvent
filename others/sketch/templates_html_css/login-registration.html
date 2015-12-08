@@ -49,29 +49,45 @@
           <div class="inner cover">
             <div class="row">
               <div class="col-md-6">
+                <div class="steps-circle">
+                  <div class="step active" id="step1"></div>
+                  <div class="step" id="step2"></div>
+                  <div class="step" id="step3"></div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <h2>Inscription</h2>
+                <form method="post">
+                  <div class="infosGeneral">
+                    <input class="input" type="text" name="name" placeholder="Nom d'utilisateur" />
+                    <input class="input" type="password" name="password" placeholder="Mot de passe" />
+                    <input class="input" type="password" name="password2" placeholder="Confirmation du mot de passe" />
+                    <input class="input" type="email" name="email" placeholder="E-mail" />
+                    <a href="#" class="btn btn-lg btn-default" id="step-next1">Suivant</a>
+                  </div>
+                  <div class="infosPersonnel">
+                    <input class="input" type="text" name="nom" placeholder="Nom" />
+                    <input class="input" type="text" name="prenom" placeholder="Prénom" />
+                    <input class="input" type="text" name="age" placeholder="Âge" />
+                    <a href="#" class="btn btn-lg btn-default" id="step-next2">Suivant</a>
+                  </div>
+                  <div class="adresse">
+                    <input class="input" type="text" name="adresse" placeholder="Adresse" />
+                    <input class="input" type="text" name="codePostal" placeholder="Code postal" />
+                    <input class="input" type="text" name="ville" placeholder="Ville" />
+                    <input class="input" type="text" name="pays" placeholder="Pays" />
+                    <input type="submit" class="btn btn-lg btn-default" value="S'inscrire" />
+                  </div>
+                </form>
+              </div>
+              <div class="col-md-6">
                 <h2>Connexion</h2>
                 <form method="post">
                   <input class="input" type="text" name="name" placeholder="Nom d'utilisateur" />
                   <input class="input" type="password" name="password" placeholder="Mot de passe" />
                   <input type="submit" class="btn btn-lg btn-default" value="Connexion" />
-                </form>
-              </div>
-              <div class="col-md-6">
-                <h2>Inscription</h2>
-                <form method="post">
-                  <input class="input" type="text" name="name" placeholder="Nom d'utilisateur" />
-                  <input class="input" type="password" name="password" placeholder="Mot de passe" />
-                  <input class="input" type="password" name="password2" placeholder="Confirmation du mot de passe" />
-                  <input class="input" type="email" name="email" placeholder="Mot de passe" />
-                  <input class="input" type="text" name="name" placeholder="Nom d'utilisateur" />
-                  <input class="input" type="password" name="password" placeholder="Mot de passe" />
-                  <input class="input" type="password" name="password2" placeholder="Confirmation du mot de passe" />
-                  <input class="input" type="email" name="email" placeholder="Mot de passe" />
-                  <input class="input" type="text" name="name" placeholder="Nom d'utilisateur" />
-                  <input class="input" type="password" name="password" placeholder="Mot de passe" />
-                  <input class="input" type="password" name="password2" placeholder="Confirmation du mot de passe" />
-                  <input class="input" type="email" name="email" placeholder="Mot de passe" />
-                  <input type="submit" class="btn btn-lg btn-default" value="S'inscrire" />
                 </form>
               </div>
             </div>
@@ -81,7 +97,7 @@
             <div class="inner">
               <p class="socialNetworks">
                 <a href="#"><i class="fa fa-facebook-square"></i></a>
-                <a href="#"><i class="fa fa-twitter-square"></i></a>
+                <a href="https://twitter.com/StupFX"><i class="fa fa-twitter-square"></i></a>
               </p>
               <p>Création d’un évènement autour du jeu Mixtour, by StupFX</p>
             </div>
@@ -100,5 +116,42 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="js/ie10-viewport-bug-workaround.js"></script>
-  </body>
+    <script>
+      $('.infosPersonnel').hide();
+      $('.adresse').hide();
+
+      $('#step-next1').on('click', function() {
+        $('.infosGeneral').hide(400);
+        $('.infosPersonnel').show(400);
+        $('#step2').addClass('active');
+      });
+
+      $('#step-next2').on('click', function() {
+        $('.infosPersonnel').hide(400);
+        $('.adresse').show(400);
+        $('#step3').addClass('active');
+      });
+
+      $('#step1').on('click', function() {
+        $('.infosGeneral').show(400);
+        $('.infosPersonnel').hide(400);
+        $('.adresse').hide(400);
+        $('#step1').addClass('active');
+      });
+
+      $('#step2').on('click', function() {
+        $('.infosGeneral').hide(400);
+        $('.infosPersonnel').show(400);
+        $('.adresse').hide(400);
+        $('#step2').addClass('active');
+      });
+
+      $('#step3').on('click', function() {
+        $('.infosGeneral').hide(400);
+        $('.infosPersonnel').hide(400);
+        $('.adresse').show(400);
+        $('#step3').addClass('active');
+      });
+    </script>
+  </body> 
 </html>
