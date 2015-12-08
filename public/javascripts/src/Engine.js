@@ -3,7 +3,7 @@
 var Engine = function () {
 
 // private attributes and methods
-    var player, currentPlayer, board, selected, nbSelected, score, nbTokens;
+    var player, currentPlayer, board, selected, nbSelected, score, nbTokens, previousMovement;
 
     var foreach3D = function (n1, n2, n3, callback) {
         var i, j, k;
@@ -64,6 +64,7 @@ var Engine = function () {
         player = {player1 : 1, player2 : 2};
         score = {player1 : 0, player2 : 0};
         nbTokens = {player1 : 25, player2 : 25};
+        previousMovement = {from : "", to : "", value : 0};
         currentPlayer = player.player1;
         selected = "";
         nbSelected = 0;
@@ -130,6 +131,7 @@ var Engine = function () {
             else {
                 nbTokens.player2--;
             }
+            previousMovement = {from : "", to : "", value : 0};
             return true;
         }
         return false;
@@ -144,27 +146,37 @@ var Engine = function () {
                 board[pos.i][pos.j][getNumberTokenAtIJ(pos.i, pos.j)] = board[selectedPos.i][selectedPos.j][i];
                 board[selectedPos.i][selectedPos.j][i] = 0;
             }
+            previousMovement = {from : selected, to : position, value : nbSelected};
         }
         return authorized;
     };
 
     var authorizedMove = function (position) {
         var lineMove = horizontalMove(position) || verticalMove(position) || diagonalMove(position);
-        return lineMove;
+        var notReversedMove = notAnUndoMovement(position);
+        return lineMove && notReversedMove;
     };
 
     var horizontalMove = function (position) {
-        return position.charCodeAt(1) === selected.charCodeAt(1);
+        var pos = getIJFromStr(position), selectedPos = getIJFromStr(selected);
+        return pos.i === selectedPos.i;
     };
 
     var verticalMove = function (position) {
-        return position.charCodeAt(0) === selected.charCodeAt(0);
+        var pos = getIJFromStr(position), selectedPos = getIJFromStr(selected);
+        return pos.j === selectedPos.j;
     };
 
     var diagonalMove = function (position) {
         var pos = getIJFromStr(position), selectedPos = getIJFromStr(selected);
         var x = Math.abs(pos.i - selectedPos.i), y = Math.abs(pos.j - selectedPos.j);
         return x === y;
+    };
+
+    var notAnUndoMovement = function (position) {
+        return !(position === previousMovement.from
+               && selected === previousMovement.to
+               && nbSelected === previousMovement.value);
     };
 
 // public methods

@@ -47,10 +47,18 @@ EngineTest.prototype.testScore = function () {
 EngineTest.prototype.testMoves = function () {
     var e = new Engine();
     e.play("A1");
+    assertFalse(e.play("A1"));
     e.play("B2");
     e.selectToken("A1", 1);
     assertTrue(e.play("B2"));
     e.play("C4");
     e.selectToken("B2", 1);
     assertFalse(e.play("C4"));
+    e.play("C3");
+    e.selectToken("C4", 1);
+    e.play("C3");
+    e.selectToken("B2", 1);
+    e.play("C3");
+    e.selectToken("C3", 1);
+    assertFalse(e.play("B2"));
 };
