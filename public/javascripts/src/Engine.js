@@ -3,7 +3,7 @@
 var Engine = function () {
 
 // private attributes and methods
-    var player, currentPlayer, board, selected, nbSelected;
+    var player, currentPlayer, board, selected, nbSelected, score, nbTokens;
 
     var foreach3D = function (n1, n2, n3, callback) {
         var i, j, k;
@@ -62,6 +62,8 @@ var Engine = function () {
 
     var initialization = function () {
         player = {player1 : 1, player2 : 2};
+        score = {player1 : 0, player2 : 0};
+        nbTokens = {player1 : 25, player2 : 25};
         currentPlayer = player.player1;
         selected = "";
         nbSelected = 0;
@@ -84,6 +86,25 @@ var Engine = function () {
         }
     };
 
+    var attributePoint = function (position) {
+        var pos = getIJFromStr(position);
+        var arraySize = getNumberTokenAtIJ(pos.i, pos.j);
+        if(arraySize >= 5) {
+            if(getTopOfArray(position) === 1) {
+                score.player1++;
+            }
+            else {
+                score.player2++;
+            }
+        }
+    };
+
+    var getTopOfArray = function (position) {
+        var pos = getIJFromStr(position);
+        var arraySize = getNumberTokenAtIJ(pos.i, pos.j);
+        return board[pos.i][pos.j][arraySize-1];
+    };
+
 // public methods
     this.getCurrentPlayer = function () {
         return currentPlayer;
@@ -93,12 +114,21 @@ var Engine = function () {
         return board[i][j][k];
     };
 
+    this.getNbTokensOfPlayer = function (idPlayer) {
+        if(idPlayer === player.player1) {
+            return nbTokens.player1;
+        }
+        else {
+            return nbTokens.player2;
+        }
+    };
+
     this.selectToken = function (position, number) {
         selected = position;
         nbSelected = number;
     };
 
-    this.unselectToken = function () {
+    this.deselectToken = function () {
         selected = "";
         nbSelected = 0;
     };
@@ -112,13 +142,43 @@ var Engine = function () {
                 board[pos.i][pos.j][getNumberTokenAtIJ(pos.i, pos.j)] = board[selectedPos.i][selectedPos.j][i];
                 board[selectedPos.i][selectedPos.j][i] = 0;
             }
-            this.unselectToken();
+            this.deselectToken();
         }
         else {
             board[pos.i][pos.j][0] = currentPlayer;
+            if(currentPlayer === player.player1) {
+                nbTokens.player1--;
+            }
+            else {
+                nbTokens.player2--;
+            }
         }
         switchPlayer();
         drawBoard();
+        attributePoint(position);
+    };
+
+    this.getScorePerPlayer = function (idPlayer) {
+        if(idPlayer === player.player1) {
+            return score.player1;
+        }
+        else {
+            return score.player2;
+        }
+    };
+
+    this.doesTheCurrentPlayerWin = function () {
+        if(currentPlayer === player.player1) {
+            if(score.player1 === 5) {
+                return true;
+            }
+        }
+        if(currentPlayer === player.player2) {
+            if(score.player2 === 5) {
+                return true;
+            }
+        }
+        return false;
     };
 
     initialization();

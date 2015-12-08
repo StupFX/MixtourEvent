@@ -23,3 +23,23 @@ EngineTest.prototype.testPlayer = function () {
     e.play("A2");
     assertTrue(e.getCaseBoard(1,0,0) === 2);
 };
+
+EngineTest.prototype.testScore = function () {
+    var e = new Engine();
+    e.play("A1");
+    e.play("A2");
+    e.selectToken("A1", 1);
+    e.play("A2");
+    e.play("A3");
+    e.selectToken("A2", 2);
+    e.play("A3");
+    e.play("A4");
+    e.selectToken("A3", 3);
+    e.play("A4");
+    e.play("A3");
+    e.selectToken("A4", 4);
+    e.play("A3");
+    assertTrue(e.getScorePerPlayer(1) === 1);
+    assertFalse(e.doesTheCurrentPlayerWin());
+    assertTrue(e.getNbTokensOfPlayer(2) === 21);
+};
