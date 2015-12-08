@@ -120,6 +120,53 @@ var Engine = function () {
         }
     };
 
+    var putATokenInAnEmptyRoom = function (position) {
+        var pos = getIJFromStr(position);
+        if(getNumberTokenAtIJ(pos.i, pos.j) === 0) {
+            board[pos.i][pos.j][0] = currentPlayer;
+            if(currentPlayer === player.player1) {
+                nbTokens.player1--;
+            }
+            else {
+                nbTokens.player2--;
+            }
+            return true;
+        }
+        return false;
+    };
+
+    var moveAPileOnAnother = function (position) {
+        var pos = getIJFromStr(position), selectedPos = getIJFromStr(selected), i;
+        var selectedArraySize = getNumberTokenAtIJ(selectedPos.i, selectedPos.j);
+        var authorized = authorizedMove(position);
+        if(authorized) {
+            for (i = selectedArraySize - nbSelected; i < selectedArraySize; i++) {
+                board[pos.i][pos.j][getNumberTokenAtIJ(pos.i, pos.j)] = board[selectedPos.i][selectedPos.j][i];
+                board[selectedPos.i][selectedPos.j][i] = 0;
+            }
+        }
+        return authorized;
+    };
+
+    var authorizedMove = function (position) {
+        var lineMove = horizontalMove(position) || verticalMove(position) || diagonalMove(position);
+        return lineMove;
+    };
+
+    var horizontalMove = function (position) {
+        return position.charCodeAt(1) === selected.charCodeAt(1);
+    };
+
+    var verticalMove = function (position) {
+        return position.charCodeAt(0) === selected.charCodeAt(0);
+    };
+
+    var diagonalMove = function (position) {
+        var pos = getIJFromStr(position), selectedPos = getIJFromStr(selected);
+        var x = Math.abs(pos.i - selectedPos.i), y = Math.abs(pos.j - selectedPos.j);
+        return x === y;
+    };
+
 // public methods
     this.getCurrentPlayer = function () {
         return currentPlayer;
@@ -149,28 +196,20 @@ var Engine = function () {
     };
 
     this.play = function (position) {
-        var pos = getIJFromStr(position), i;
+        var authorized = false;
         if(selected !== "") {
-            var selectedPos = getIJFromStr(selected);
-            var maxSelectedPos = getNumberTokenAtIJ(selectedPos.i, selectedPos.j);
-            for(i = maxSelectedPos - nbSelected ; i < maxSelectedPos ; i++) {
-                board[pos.i][pos.j][getNumberTokenAtIJ(pos.i, pos.j)] = board[selectedPos.i][selectedPos.j][i];
-                board[selectedPos.i][selectedPos.j][i] = 0;
-            }
+            authorized = moveAPileOnAnother(position);
             this.deselectToken();
         }
         else {
-            board[pos.i][pos.j][0] = currentPlayer;
-            if(currentPlayer === player.player1) {
-                nbTokens.player1--;
-            }
-            else {
-                nbTokens.player2--;
-            }
+            authorized = putATokenInAnEmptyRoom(position);
         }
-        switchPlayer();
-        drawBoard();
-        attributePoint(position);
+        if(authorized === true) {
+            drawBoard();
+            attributePoint(position);
+            switchPlayer();
+        }
+        return authorized;
     };
 
     this.getScorePerPlayer = function (idPlayer) {

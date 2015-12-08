@@ -41,5 +41,16 @@ EngineTest.prototype.testScore = function () {
     e.play("A3");
     assertTrue(e.getScorePerPlayer(1) === 1);
     assertFalse(e.doesTheCurrentPlayerWin());
-    assertTrue(e.getNbTokensOfPlayer(2) === 21);
+    assertTrue(e.getNbTokensOfPlayer(2) === 25);
+};
+
+EngineTest.prototype.testMoves = function () {
+    var e = new Engine();
+    e.play("A1");
+    e.play("B2");
+    e.selectToken("A1", 1);
+    assertTrue(e.play("B2"));
+    e.play("C4");
+    e.selectToken("B2", 1);
+    assertFalse(e.play("C4"));
 };
