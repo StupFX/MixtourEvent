@@ -7,6 +7,14 @@ var step = 10;
 var boardSize = 5;
 var boardDepth = 8;
 
+var Mouse = {
+    down: false,
+    hasMoved: false,
+    originX: 0,
+    originY: 0,
+    origin: ''
+};
+
 var GUI = function (canvas) {
 
     // private attributes
@@ -35,22 +43,11 @@ var GUI = function (canvas) {
         tokens[2].src = 'whiteToken.png';
     };
 
-    var create3DBoard = function () {
-        board = new Array(boardSize);
-
-        for (var i = 0; i < boardSize; i++) {
-            board[i] = new Array(boardSize);
-            for (var j = 0; j < boardSize; j++) {
-                board[i][j] = new Array(boardDepth);
-            }
-        }
-    };
-
     var initBoard = function () {
         board = [
-            [[1, 2, 1, 2], [1, 2, 1], [], [], []],
             [[], [], [], [], []],
-            [[], [], [2, 2], [], []],
+            [[], [], [], [], []],
+            [[], [], [], [], []],
             [[], [], [], [], []],
             [[], [], [], [], []]
         ];
@@ -84,10 +81,20 @@ var GUI = function (canvas) {
         );
     };
 
+    var drawCount = function (x, y) {
+        if (tower[tower.length - 1] == 1) {
+            ctx.fillStyle = '#FFFFFF';
+        } else {
+            ctx.fillStyle = '#4183D7';
+        }
+        ctx.fillText(tower.length, x - 4, y - step * tower.length + 5);
+    };
+
     var drawTower = function (x, y) {
         for (var token in tower) {
             drawMovingTokens(x, y, token, tower[token]);
         }
+        drawCount(x, y);
     };
 
     var drawBoard = function () {
@@ -96,6 +103,7 @@ var GUI = function (canvas) {
         for (line = 0; line < boardSize; line++) {
             for (col = 0; col < boardSize; col++) {
                 for (token = 0; token < board[line][col].length; token++) {
+                    console.log('!');
                     drawToken(line, col, token, board[line][col][token]);
                 }
             }
@@ -137,7 +145,7 @@ var GUI = function (canvas) {
         tower = [];
     };
 
-    var updateBoard = function (x, y) {
+    var removeTowerFromBoard = function (x, y) {
         for (var token = 0; token < tower.length; token++) {
             board[x][y].pop();
         }
@@ -151,29 +159,65 @@ var GUI = function (canvas) {
 
     // init events
     var onMouseDown = function (e) {
-        var coords = convert(e.offsetX, e.offsetY),
-            token = getClickedToken(e.offsetX, e.offsetY, coords);
+        var x = e.clientX - c.offsetLeft,
+            y = e.clientY - c.offsetTop;
+
+        var coords = convert(x, y),
+            token = getClickedToken(x, y, coords);
 
         if (token !== null) {
             createTower(coords, token);
-            updateBoard(coords.x, coords.y);
+            removeTowerFromBoard(coords.x, coords.y);
         }
+
+        Mouse.down = true;
+        Mouse.originX = x;
+        Mouse.originY = y;
+        Mouse.origin = coordsToString(coords);
     };
 
     var onMouseUp = function (e) {
-        var coords = convert(e.offsetX, e.offsetY);
-        console.log('play(' + coordsToString(coords) + ');');
+        var x = e.clientX - c.offsetLeft,
+            y = e.clientY - c.offsetTop;
+
+        var coords = convert(x, y);
+
+        if (Mouse.hasMoved) {
+            if (Mouse.origin !== coordsToString(coords)) {
+                console.log('play(' + coordsToString(coords) + ');');
+            }
+        }
+        else {
+            console.log('play(' + coordsToString(coords) + ');');
+        }
 
         resetBoard(coords.x, coords.y);
         destroyTower();
 
         redraw();
+
+        Mouse.down = false;
+        Mouse.hasMoved = false;
     };
 
     var onMouseMove = function (e) {
-        if (tower.length != 0) {
-            redraw();
-            drawTower(e.offsetX, e.offsetY);
+        if (Mouse.down) {
+            if (!Mouse.hasMoved) {
+                Mouse.hasMoved = true;
+                console.log(
+                    'select('
+                    + coordsToString(convert(Mouse.originX, Mouse.originY))
+                    + ',' + tower.length + ');'
+                );
+            }
+
+            var x = e.clientX - c.offsetLeft,
+                y = e.clientY - c.offsetTop;
+
+            if (tower.length != 0) {
+                redraw();
+                drawTower(x, y);
+            }
         }
     };
 
@@ -187,6 +231,8 @@ var GUI = function (canvas) {
     var init = function (canvas) {
         c = canvas;
         ctx = c.getContext('2d');
+        ctx.font = "bold 17px Arial";
+
         width = c.width;
         height = c.height;
 
@@ -196,11 +242,9 @@ var GUI = function (canvas) {
         initBoard();
 
         drawEmptyBoard();
-        setTimeout(drawBoard, 50);
     };
 
     // public methods
-
 
     init(canvas);
 };
