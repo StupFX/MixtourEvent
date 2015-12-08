@@ -1,5 +1,6 @@
 extends layout
 block content
+<<<<<<< HEAD
     h1= title
     h2 Login
     form( action="/signin", method="post")
@@ -18,3 +19,23 @@ block content
         input(type="password", name="password")
         input(type="submit",name="signup",id="signup", value="register")
     
+=======
+   h1= title
+   h2 Login
+   form( action="/signin", method="post")
+      if typeof(errorMessage) !== 'undefined'
+         span= errorMessage
+      br
+      input(type="text", name="username")
+      br
+      input(type="password", name="password")
+
+      input(type="submit",name="signin", value="sign in")
+
+   h2 Register
+   form(name="login", action="/signup", method="post")
+      input(type="text", name="username")
+      br
+      input(type="password", name="password")
+      input(type="submit",name="signup",id="signup", value="register")
+>>>>>>> development
