@@ -147,6 +147,18 @@ form input:focus {
   color: #808080;
 }
 
+form textarea.input {
+  background: #FFF;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-indent: 10px;
+  height: 300px;
+  padding-top: 10px;
+}
+
 
 /*
  * Game page
@@ -173,6 +185,13 @@ form input:focus {
 
 .panel-group .panel-heading+.panel-collapse>.list-group, .panel-group .panel-heading+.panel-collapse>.panel-body {
   border-top: none;
+}
+
+/*
+ * Contact page
+ */
+.contact form {
+  margin: 50px 0;
 }
 
 /* --- RESPONSIVE DESIGN --- */
