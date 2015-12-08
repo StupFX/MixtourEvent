@@ -123,7 +123,7 @@ var Engine = function () {
 
     var putATokenInAnEmptyRoom = function (position) {
         var pos = getIJFromStr(position);
-        if(getNumberTokenAtIJ(pos.i, pos.j) === 0) {
+        if(isEmpty(position)) {
             board[pos.i][pos.j][0] = currentPlayer;
             if(currentPlayer === player.player1) {
                 nbTokens.player1--;
@@ -154,23 +154,91 @@ var Engine = function () {
     var authorizedMove = function (position) {
         var lineMove = horizontalMove(position) || verticalMove(position) || diagonalMove(position);
         var notReversedMove = notAnUndoMovement(position);
-        return lineMove && notReversedMove;
+        var notEmptyTarget = !isEmpty(position);
+        var rightDistance = sizeIsDistance(position);
+        return lineMove && notReversedMove && notEmptyTarget && rightDistance;
+    };
+
+    var isEmpty = function (position) {
+        var pos = getIJFromStr(position);
+        return (getNumberTokenAtIJ(pos.i, pos.j) === 0);
     };
 
     var horizontalMove = function (position) {
         var pos = getIJFromStr(position), selectedPos = getIJFromStr(selected);
-        return pos.i === selectedPos.i;
+        var min, max, somethingBetween = 0, j;
+        if(pos.i === selectedPos.i) {
+            if (pos.j < selectedPos.j) {
+                min = pos.j, max = selectedPos.j;
+            }
+            else {
+                min = selectedPos.j, max = pos.j;
+            }
+            for (j = (min + 1); j < max; j++) {
+                somethingBetween += getNumberTokenAtIJ(pos.i, j);
+            }
+            return (somethingBetween === 0);
+        }
+        return false;
     };
 
     var verticalMove = function (position) {
         var pos = getIJFromStr(position), selectedPos = getIJFromStr(selected);
-        return pos.j === selectedPos.j;
+        var min, max, somethingBetween = 0, i;
+        if(pos.j === selectedPos.j) {
+            if (pos.i < selectedPos.i) {
+                min = pos.i, max = selectedPos.i;
+            }
+            else {
+                min = selectedPos.i, max = pos.i;
+            }
+            for (i = (min + 1); i < max; i++) {
+                somethingBetween += getNumberTokenAtIJ(i, pos.j);
+            }
+            return (somethingBetween === 0);
+        }
+        return false;
     };
 
     var diagonalMove = function (position) {
         var pos = getIJFromStr(position), selectedPos = getIJFromStr(selected);
-        var x = Math.abs(pos.i - selectedPos.i), y = Math.abs(pos.j - selectedPos.j);
-        return x === y;
+        var x = pos.i - selectedPos.i, y = pos.j - selectedPos.j, i, j, mini, minj, maxi, maxj;
+        var somethingBetween = 0;
+        if(pos.i < selectedPos.i) {
+            mini = pos.i, maxi = selectedPos.i;
+        }
+        else {
+            mini = selectedPos.i, maxi = pos.i;
+        }
+        if(Math.abs(x) === Math.abs(y)) {
+            if(pos.i < selectedPos.i) {
+                minj = pos.j, maxj = selectedPos.j;
+            }
+            else {
+                minj = selectedPos.j, maxj = pos.j;
+            }
+            for(i = (mini+1) ; i < maxi ; i++) {
+                for(j = (minj+1) ; j < maxj ; j++) {
+                    somethingBetween += getNumberTokenAtIJ(i, j);
+                }
+            }
+            return somethingBetween === 0;
+        }
+        else if(Math.abs(x) === -(Math.abs(y))) {
+            if(pos.i < selectedPos.i) {
+                minj = pos.j, maxj = selectedPos.j;
+            }
+            else {
+                minj = selectedPos.j, maxj = pos.j;
+            }
+            for(i = (mini+1) ; i < maxi ; i++) {
+                for(j = (minj-1) ; j > maxj ; j--) {
+                    somethingBetween += getNumberTokenAtIJ(i, j);
+                }
+            }
+            return somethingBetween === 0;
+        }
+        return false;
     };
 
     var notAnUndoMovement = function (position) {
@@ -179,9 +247,25 @@ var Engine = function () {
                && nbSelected === previousMovement.value);
     };
 
+    var sizeIsDistance = function (position) {
+        var pos = getIJFromStr(position), selectedPos = getIJFromStr(selected);
+        var size = getNumberTokenAtIJ(pos.i, pos.j), length;
+        if(pos.i === selectedPos.i) {
+            length = Math.abs(pos.j - selectedPos.j);
+        }
+        else {
+            length = Math.abs(pos.i - selectedPos.i);
+        }
+        return size === length;
+    };
+
 // public methods
     this.getCurrentPlayer = function () {
         return currentPlayer;
+    };
+
+    this.getBoard = function() {
+        return board;
     };
 
     this.getCaseBoard = function (i, j, k) {

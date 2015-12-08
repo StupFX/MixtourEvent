@@ -11,9 +11,10 @@ EngineTest.prototype.testBasicPlay = function () {
     var e = new Engine();
     e.play("A1");
     assertTrue(e.getCaseBoard(0,0,0) === 1);
+    e.play("A2");
     e.selectToken("A1", 1);
     e.play("A2");
-    assertTrue(e.getCaseBoard(1,0,0) === 1);
+    assertTrue(e.getCaseBoard(1,0,0) === 2);
 };
 
 EngineTest.prototype.testPlayer = function () {
@@ -61,4 +62,32 @@ EngineTest.prototype.testMoves = function () {
     e.play("C3");
     e.selectToken("C3", 1);
     assertFalse(e.play("B2"));
+};
+
+EngineTest.prototype.testNothingBetween = function () {
+    var e = new Engine();
+    e.play("A1");
+    e.play("B2");
+    e.play("C3");
+    e.play("D4");
+    e.selectToken("D4", 1);
+    assertFalse(e.play("E5"));
+    e.selectToken("D4", 1);
+    e.play("C3");
+    e.selectToken("A1", 1);
+    assertFalse(e.play("C3"));
+};
+
+EngineTest.prototype.testDistance = function () {
+    var e = new Engine();
+    e.play("A1");
+    e.play("C3");
+    e.play("D4");
+    e.selectToken("C3", 1);
+    e.play("D4");
+    e.selectToken("A1", 1);
+    assertFalse(e.play("D4"));
+    e.play("B2");
+    e.selectToken("B2", 1);
+    assertTrue(e.play("D4"));
 };
