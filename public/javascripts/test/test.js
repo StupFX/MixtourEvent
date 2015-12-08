@@ -11,7 +11,83 @@ EngineTest.prototype.testBasicPlay = function () {
     var e = new Engine();
     e.play("A1");
     assertTrue(e.getCaseBoard(0,0,0) === 1);
+    e.play("A2");
     e.selectToken("A1", 1);
     e.play("A2");
-    assertTrue(e.getCaseBoard(1,0,0) === 1);
+    assertTrue(e.getCaseBoard(1,0,0) === 2);
+};
+
+EngineTest.prototype.testPlayer = function () {
+    var e = new Engine();
+    e.play("A1");
+    assertTrue(e.getCaseBoard(0,0,0) === 1);
+    e.play("A2");
+    assertTrue(e.getCaseBoard(1,0,0) === 2);
+};
+
+EngineTest.prototype.testScore = function () {
+    var e = new Engine();
+    e.play("A1");
+    e.play("A2");
+    e.selectToken("A1", 1);
+    e.play("A2");
+    e.play("A3");
+    e.selectToken("A2", 2);
+    e.play("A3");
+    e.play("A4");
+    e.selectToken("A3", 3);
+    e.play("A4");
+    e.play("A3");
+    e.selectToken("A4", 4);
+    e.play("A3");
+    assertTrue(e.getScorePerPlayer(1) === 1);
+    assertFalse(e.doesTheCurrentPlayerWin());
+    assertTrue(e.getNbTokensOfPlayer(2) === 25);
+};
+
+EngineTest.prototype.testMoves = function () {
+    var e = new Engine();
+    e.play("A1");
+    assertFalse(e.play("A1"));
+    e.play("B2");
+    e.selectToken("A1", 1);
+    assertTrue(e.play("B2"));
+    e.play("C4");
+    e.selectToken("B2", 1);
+    assertFalse(e.play("C4"));
+    e.play("C3");
+    e.selectToken("C4", 1);
+    e.play("C3");
+    e.selectToken("B2", 1);
+    e.play("C3");
+    e.selectToken("C3", 1);
+    assertFalse(e.play("B2"));
+};
+
+EngineTest.prototype.testNothingBetween = function () {
+    var e = new Engine();
+    e.play("A1");
+    e.play("B2");
+    e.play("C3");
+    e.play("D4");
+    e.selectToken("D4", 1);
+    assertFalse(e.play("E5"));
+    e.selectToken("D4", 1);
+    e.play("C3");
+    e.selectToken("A1", 1);
+    assertFalse(e.play("C3"));
+};
+
+EngineTest.prototype.testDistance = function () {
+    var e = new Engine();
+    e.play("A1");
+    e.play("C3");
+    e.play("D4");
+    e.selectToken("C3", 1);
+    e.play("D4");
+    e.selectToken("A1", 1);
+    assertFalse(e.play("D4"));
+    e.play("B2");
+    e.selectToken("B2", 1);
+    assertTrue(e.play("D4"));
 };
