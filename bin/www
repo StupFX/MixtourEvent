@@ -100,10 +100,13 @@ var gameCount = 0;
 io.on('connection', function(client) {
     var id = idCount++;
     var idGame = gameCount++;
+    var already = false;
       console.log('Client connected...');
       client.on('join', function(data) {
-            Matchmaking[id] = this;
-            
+          //console.log("le id"+id);
+
+          Matchmaking[id] = this;
+          client.emit('match', id);
           console.log("ON STOCK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+Matchmaking.length +" "+id);
             if(Matchmaking.length >=2 ){
                 var player1 = Matchmaking[0];
@@ -113,8 +116,8 @@ io.on('connection', function(client) {
                 var game = {P1 : player1 , P2 : player2};
                 CurrentGame[idGame] = game;
 
-                CurrentGame[idGame].P1.emit('messages','On a trouvé un adversaire');
-                CurrentGame[idGame].P2.emit('messages','On a trouvé un adversaire');
+                CurrentGame[idGame].P1.emit('messages',{message: 'On a trouvé un adversaire'  ,idG : idGame});
+                CurrentGame[idGame].P2.emit('messages',{message: 'On a trouvé un adversaire' ,idG : idGame});
                 idGame++;
                 Matchmaking.shift();
                 Matchmaking.shift();
@@ -123,6 +126,11 @@ io.on('connection', function(client) {
             }
 
         });
+
+        client.on('deco', function (data) {
+            console.log("on a recu "+data);
+            Matchmaking.splice(data,1);
+        })
 
   });
 

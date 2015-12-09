@@ -42,17 +42,17 @@ var signIn = function(req, res, next) {
 // POST
 var signInPost = function(req, res, next) {
     passport.authenticate('local', { successRedirect: '/',
-        failureRedirect: '/signin'}, function(err, user, info) {
+        failureRedirect: '/login-registration'}, function(err, user, info) {
         if(err) {
-            return res.render('signin', {title: 'Sign In', errorMessage: err.message});
+            return res.render('login-registration', {title: 'Sign In', errorMessage: err.message});
         }
 
         if(!user) {
-            return res.render('signin', {title: 'Sign In', errorMessage: info.message});
+            return res.render('login-registration', {title: 'Sign In', errorMessage: info.message});
         }
         return req.logIn(user, function(err) {
             if(err) {
-                return res.render('signin', {title: 'Sign In', errorMessage: err.message});
+                return res.render('login-registration', {title: 'Sign In', errorMessage: err.message});
             } else {
                 return res.redirect('/');
             }
@@ -79,7 +79,7 @@ var signUpPost = function(req, res, next) {
 
     return usernamePromise.then(function(model) {
         if(model) {
-            res.render('signup', {title: 'signup', errorMessage: 'username already exists'});
+            res.render('login-registration', {title: 'login-registration', errorMessage: 'username already exists'});
         } else {
             //****************************************************//
             // MORE VALIDATION GOES HERE(E.G. PASSWORD VALIDATION)
@@ -113,6 +113,10 @@ var notFound404 = function(req, res, next) {
     res.render('404', {title: '404 Not Found'});
 };
 
+var login = function(req, res, next) {
+    res.render('login-registration', {title:'Mixtour Event - Connexion / Inscription'});
+}
+
 // export functions
 /**************************************/
 // index
@@ -137,3 +141,4 @@ module.exports.signOut = signOut;
 module.exports.notFound404 = notFound404;
 
 module.exports.accueil = accueil;
+module.exports.login = login;

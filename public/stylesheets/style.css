@@ -19,6 +19,11 @@ a:hover {
   border: 1px solid #fff;
 }
 
+::-webkit-input-placeholder {color:#808080;}
+  ::-moz-placeholder          {color:#808080;} /* Firefox 19+ */
+  :-moz-placeholder           {color:#808080;} /* Firefox 18- */
+  :-ms-input-placeholder      {color:#808080;}
+
 
 /*
  * Base structure

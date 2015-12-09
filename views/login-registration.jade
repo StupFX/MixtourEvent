@@ -18,7 +18,7 @@ block content
   .row
     .col-md-6
       h2 Inscription
-      form(method='post')
+      form(method='post', action="signup")
         .infosGeneral
           input.input(type='text', name='username', placeholder="Nom d'utilisateur")
           input.input(type='password', name='password', placeholder='Mot de passe')
@@ -38,7 +38,7 @@ block content
           input.btn.btn-lg.btn-default(type='submit', value="S'inscrire")
     .col-md-6
       h2 Connexion
-      form(method='post')
+      form(method='post' action="/signin")
         input.input(type='text', name='username', placeholder="Nom d'utilisateur")
         input.input(type='password', name='password', placeholder='Mot de passe')
         input.btn.btn-lg.btn-default(type='submit', value='Connexion')
