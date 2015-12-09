@@ -1,8 +1,247 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+/*
+ * Globals
+ */
+
+/* Links */
+a,
+a:focus,
+a:hover {
+  color: #fff;
 }
 
-a {
-  color: #00B7FF;
+/* Custom default button */
+.btn-default,
+.btn-default:hover,
+.btn-default:focus {
+  color: #333;
+  text-shadow: none; /* Prevent inheritence from `body` */
+  background-color: #fff;
+  border: 1px solid #fff;
 }
+
+::-webkit-input-placeholder {color:#808080;}
+  ::-moz-placeholder          {color:#808080;} /* Firefox 19+ */
+  :-moz-placeholder           {color:#808080;} /* Firefox 18- */
+  :-ms-input-placeholder      {color:#808080;}
+
+
+/*
+ * Base structure
+ */
+
+html,
+body {
+  background-color: #333;
+}
+body {
+  color: #fff;
+  text-align: center;
+  text-shadow: 0 1px 3px rgba(0,0,0,.5);
+}
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+  display: table;
+  width: 100%;
+}
+.site-wrapper-inner {
+  display: table-cell;
+  vertical-align: top;
+}
+.cover-container {
+  margin-right: auto;
+  margin-left: auto;
+}
+
+/* Padding for spacing */
+.inner {
+  padding: 30px;
+}
+
+
+/*
+ * Header
+ */
+.masthead-brand {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.masthead-nav > li {
+  display: inline-block;
+}
+.masthead-nav > li + li {
+  margin-left: 20px;
+}
+.masthead-nav > li > a {
+  padding-right: 0;
+  padding-left: 0;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff; /* IE8 proofing */
+  color: rgba(255,255,255,.75);
+  border-bottom: 2px solid transparent;
+}
+.masthead-nav > li > a:hover,
+.masthead-nav > li > a:focus {
+  background-color: transparent;
+  border-bottom-color: #a9a9a9;
+  border-bottom-color: rgba(255,255,255,.25);
+}
+.masthead-nav > .active > a,
+.masthead-nav > .active > a:hover,
+.masthead-nav > .active > a:focus {
+  color: #fff;
+  border-bottom-color: #fff;
+}
+
+@media (min-width: 768px) {
+  .masthead-brand {
+    float: left;
+  }
+  .masthead-nav {
+    float: right;
+  }
+}
+
+
+/*
+ * Cover
+ */
+
+.cover {
+  padding: 0 20px;
+  margin-top: 50px;
+}
+.cover .btn-lg {
+  padding: 10px 20px;
+  font-weight: bold;
+}
+
+
+/*
+ * Footer
+ */
+
+.mastfoot {
+  color: #999; /* IE8 proofing */
+  color: rgba(255,255,255,.5);
+}
+
+.socialNetworks {
+  color: #FFF;
+  font-size: 32px;
+}
+
+.socialNetworks a {
+  padding: 0 4px;
+}
+
+/*
+ * Registration & Login page
+ */
+
+form input.input {
+  height: 50px;
+  background: #FFF;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-indent: 10px;
+}
+
+form input:focus {
+  color: #808080;
+}
+
+form textarea.input {
+  background: #FFF;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-indent: 10px;
+  height: 300px;
+  padding-top: 10px;
+}
+
+.step {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.4);
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.step.active {
+  background-color: #FFF;
+}
+
+/*
+ * Game page
+ */
+.game {
+  width: 600px;
+  height: 600px;
+  margin: 0px auto;
+  background: #FFF center center;
+  margin-bottom: 30px;
+}
+
+/*
+ * FAQ page
+ */
+ .faq {
+  text-align: left;
+ }
+
+.panel-heading {
+  padding: 10px 0px;
+  border-bottom: 1px solid #FFF !important;
+}
+
+.panel-group .panel-heading+.panel-collapse>.list-group, .panel-group .panel-heading+.panel-collapse>.panel-body {
+  border-top: none;
+}
+
+/*
+ * Contact page
+ */
+.contact form {
+  margin: 50px 0;
+}
+
+/* --- RESPONSIVE DESIGN --- */
+
+/*
+ * Affix and center
+ */
+
+@media (min-width: 768px) {
+  /* Pull out the header and footer */
+
+  /* Start the vertical centering */
+  .site-wrapper-inner {
+    vertical-align: middle;
+  }
+  /* Handle the widths */
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 100%; /* Must be percentage or pixels for horizontal alignment */
+  }
+}
+
+@media (min-width: 992px) {
+  .masthead,
+  .mastfoot,
+  .cover-container {
+    width: 700px;
+  }
+}
+
