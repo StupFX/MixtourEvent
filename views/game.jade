@@ -11,11 +11,43 @@ block nav
 block content
   .row
     .col-md-12
-      .game
+      #container
+        div#legend
+          #topLegend
+            p A
+            p B
+            p C
+            p D
+            p E
+          #leftLegend
+            p 1
+            p 2
+            p 3
+            p 4
+            p 5
+        canvas#board(width='504', height='504')
+        #scorePanel
+          .score.left
+            p Player 1
+            p.playerScore 0
+          #lastAction
+            p#details
+          .score.right
+            p Player 2
+            p.playerScore 0
+
 
 block javascripts
   script(src='Socket.js')
+  script(src='javascripts/src/Engine.js')
+  script(src='javascripts/src/GUI.js')
   script.
+    window.onload = function () {
+      var board = document.getElementById('board');
+      var engine = new Engine();
+      var Gui = new GUI(engine, board);
+    };
+
       $(document).click(function () {
         socket.emit('coucou', 'Hello World from client');
       });
@@ -30,7 +62,9 @@ block javascripts
       socket.on("howdy", function (data) {
         alert(data);
       });
-      window.onbeforeunload = function () {
-        if(true) return false;
-        return 'Handler for .unload() called.';
-      };
+
+    window.onbeforeunload = function () {
+      if(true) return false;
+      return 'Handler for .unload() called.';
+    };
+

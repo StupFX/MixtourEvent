@@ -137,11 +137,12 @@ var contact = function (req, res, next) {
 
 var faq = function (req, res, next) {
         res.render('faq', {title: 'faq'});
-};
+
+
 
 var game = function (req, res, next) {
     if(req.isAuthenticated()) {
-        res.render('game',{title: 'game'});
+        res.render('game', {title:'Mixtour Event - Jouer'});
     }else{
         res.redirect('/');
     }
@@ -171,11 +172,13 @@ module.exports.notFound404 = notFound404;
 
 module.exports.accueil = accueil;
 
+
 module.exports.login = login;
 
 module.exports.contact = contact;
 
 module.exports.faq = faq;
+
 
 module.exports.game = game;
 
