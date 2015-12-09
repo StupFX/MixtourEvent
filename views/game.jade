@@ -15,6 +15,7 @@ block content
 
 block javascripts
   script.
+    script(src='Socket.js')
     window.onbeforeunload = function () {
       if(true) return false;
       return 'Handler for .unload() called.';

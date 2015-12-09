@@ -28,7 +28,7 @@ var index = function(req, res, next) {
 
 var accueil = function(req, res, next) {
     //if(req.isAuthenticated()) res.redirect('/');
-    res.render('accueil', {title: 'Accueil'});
+    res.render('index', {title: 'Accueil'});
 };
 
 // sign in
@@ -115,8 +115,15 @@ var notFound404 = function(req, res, next) {
 
 var login = function(req, res, next) {
     res.render('login-registration', {title:'Mixtour Event - Connexion / Inscription'});
-}
+};
 
+var contact = function (req, res, next) {
+  res.render('contact', {title: 'contact'});
+};
+
+var faq = function (req, res, next) {
+    res.render('faq', {title: 'faq'});
+};
 // export functions
 /**************************************/
 // index
@@ -141,4 +148,9 @@ module.exports.signOut = signOut;
 module.exports.notFound404 = notFound404;
 
 module.exports.accueil = accueil;
+
 module.exports.login = login;
+
+module.exports.contact = contact;
+
+module.exports.faq = faq;
