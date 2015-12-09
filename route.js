@@ -5,6 +5,7 @@
 var passport = require('passport');
 var bcrypt = require('bcrypt-nodejs');
 
+var userinfo;
 // custom library
 // model
 var Model = require('./model');
@@ -41,25 +42,24 @@ var signIn = function(req, res, next) {
 // sign in
 // POST
 var signInPost = function(req, res, next) {
-    console.log("on commence a authentifier !!!!!!!!!!!!!!!!!!!!!!!!!!!");
     passport.authenticate('signin', { successRedirect: '/',
         failureRedirect: '/login-registration'}, function(err, user, info) {
-        console.log("fail 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
         if(err) {
-            console.log("fail 1 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
             return res.render('login-registration', {title: 'Sign In', errorMessage: err.message});
         }
 
         if(!user) {
-            console.log("fail 2 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
             return res.render('login-registration', {title: 'Sign In', errorMessage: info.message});
         }
         return req.logIn(user, function(err) {
             if(err) {
-                console.log("fail 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
                 return res.render('login-registration', {title: 'Sign In', errorMessage: err.message});
             } else {
-                console.log("on a authentifier !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
                 return res.redirect('/index');
             }
         });
@@ -101,8 +101,8 @@ var signUpPost = function(req, res, next) {
             var postcode = user.postcode;
             var city = user.city;
             var country = user.country;
-            var signUpUser = new Model.User({username: user.username, password: hash, mail: mail, firstname: firstname, lastname: lastname, age: age, address: address, postcode: postcode, city: city, country: country});
-
+            var nbPoint = user.nbPoint;
+            var signUpUser = new Model.User({username: user.username, password: hash, mail: mail, firstname: firstname, lastname: lastname, age: age, address: address, postcode: postcode, city: city, country: country, nbPoint: nbPoint});
             signUpUser.save().then(function(model) {
                 // sign in the newly registered user
                 signInPost(req, res, next);
@@ -135,6 +135,20 @@ var game = function(req, res, next) {
     res.render('game', {title:'Mixtour Event - Jouer'});
 };
 
+var admin = function(req, res, next){
+    if(!req.isAuthenticated()) {
+        res.redirect('/accueil');
+    } else {
+
+        var user = req.user;
+
+        if(user !== undefined) {
+            user = user.toJSON();
+        }
+        res.render('admin', {title: 'Home', user: user});
+    }
+};
+
 // export functions
 /**************************************/
 // index
@@ -162,3 +176,4 @@ module.exports.accueil = accueil;
 module.exports.login = login;
 
 module.exports.game = game;
+module.exports.admin = admin;
