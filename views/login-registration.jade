@@ -20,26 +20,26 @@ block content
       h2 Inscription
       form(method='post', action="signup")
         .infosGeneral
-          input.input(type='text', name='name', placeholder="Nom d'utilisateur")
+          input.input(type='text', name='username', placeholder="Nom d'utilisateur")
           input.input(type='password', name='password', placeholder='Mot de passe')
           input.input(type='password', name='password2', placeholder='Confirmation du mot de passe')
-          input.input(type='email', name='email', placeholder='E-mail')
+          input.input(type='email', name='mail', placeholder='E-mail')
           a#step-next1.btn.btn-lg.btn-default(href='#') Suivant
         .infosPersonnel
-          input.input(type='text', name='nom', placeholder='Nom')
-          input.input(type='text', name='prenom', placeholder='Prénom')
+          input.input(type='text', name='lastname', placeholder='Nom')
+          input.input(type='text', name='firstname', placeholder='Prénom')
           input.input(type='text', name='age', placeholder='Âge')
           a#step-next2.btn.btn-lg.btn-default(href='#') Suivant
         .adresse
-          input.input(type='text', name='adresse', placeholder='Adresse')
-          input.input(type='text', name='codePostal', placeholder='Code postal')
-          input.input(type='text', name='ville', placeholder='Ville')
-          input.input(type='text', name='pays', placeholder='Pays')
-          input.btn.btn-lg.btn-default(type='submit', value="S'inscrire")
+          input.input(type='text', name='address', placeholder='Adresse')
+          input.input(type='text', name='postcode', placeholder='Code postal')
+          input.input(type='text', name='city', placeholder='Ville')
+          input.input(type='text', name='country', placeholder='Pays')
+          input.btn.btn-lg.btn-default(type='submit', value="S'inscrire", action="index")
     .col-md-6
       h2 Connexion
       form(method='post' action="/signin")
-        input.input(type='text', name='name', placeholder="Nom d'utilisateur")
+        input.input(type='text', name='username', placeholder="Nom d'utilisateur")
         input.input(type='password', name='password', placeholder='Mot de passe')
         input.btn.btn-lg.btn-default(type='submit', value='Connexion')
 
