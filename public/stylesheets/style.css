@@ -150,6 +150,7 @@ form input.input {
   margin-bottom: 20px;
   width: 100%;
   text-indent: 10px;
+  color: #808080;
 }
 
 form input:focus {
