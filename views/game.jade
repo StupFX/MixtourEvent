@@ -1,0 +1,21 @@
+extends layout
+
+block nav
+  li
+    a(href='/') Accueil
+  li
+    a(href='/faq') Règles / FAQ
+  li
+    a(href='/contact') Contact
+
+block content
+  .row
+    .col-md-12
+      .game
+
+block javascripts
+  script.
+    window.onbeforeunload = function () {
+      if(true) return false;
+      return 'Handler for .unload() called.';
+    };

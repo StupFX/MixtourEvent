@@ -8,6 +8,7 @@ var app = require('../app');
 var debug = require('debug')('MixtourEvent:server');
 var http = require('http');
 
+
 /**
  * Get port from environment and store in Express.
  */
@@ -20,7 +21,7 @@ app.set('port', port);
  */
 
 var server = http.createServer(app);
-
+var io = require('socket.io')(server);
 /**
  * Listen on provided port, on all network interfaces.
  */
@@ -88,3 +89,51 @@ function onListening() {
     : 'port ' + addr.port;
   debug('Listening on ' + bind);
 }
+
+/**
+ + * SocketIo
+ + */
+var Matchmaking = [] ;
+var CurrentGame = [];
+var idCount = 0;
+var gameCount = 0;
+io.on('connection', function(client) {
+    var id = idCount++;
+    var idGame = gameCount++;
+    var already = false;
+      console.log('Client connected...');
+      client.on('join', function(data) {
+          //console.log("le id"+id);
+
+          Matchmaking[id] = this;
+          client.emit('match', id);
+          console.log("ON STOCK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+Matchmaking.length +" "+id);
+            if(Matchmaking.length >=2 ){
+                var player1 = Matchmaking[0];
+                var player2 = Matchmaking[1];
+
+
+                var game = {P1 : player1 , P2 : player2};
+                CurrentGame[idGame] = game;
+
+                CurrentGame[idGame].P1.emit('messages',{message: 'On a trouvé un adversaire'  ,idG : idGame});
+                CurrentGame[idGame].P2.emit('messages',{message: 'On a trouvé un adversaire' ,idG : idGame});
+                idGame++;
+                Matchmaking.shift();
+                Matchmaking.shift();
+                idCount = Matchmaking.length;
+                console.log("IL RESTE  !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+Matchmaking.length);
+            }
+
+        });
+
+        client.on('deco', function (data) {
+            console.log("on a recu "+data);
+            Matchmaking.splice(data,1);
+        })
+
+  });
+
+io.on('disconnect', function (client) {
+    console.log("deco!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+});

@@ -3,7 +3,7 @@
 var Engine = function () {
 
 // private attributes and methods
-    var player, currentPlayer, board, selected, nbSelected;
+    var player, currentPlayer, board, selected, nbSelected, score, nbTokens, previousMovement;
 
     var foreach3D = function (n1, n2, n3, callback) {
         var i, j, k;
@@ -23,16 +23,6 @@ var Engine = function () {
                 callback(i, j);
             }
         }
-    };
-
-    var getNumberTokenAtIJ = function (i, j) {
-        var cpt = 0, k;
-        for (k = 0 ; k < 8 ; k++) {
-            if(board[i][j][k] !== 0) {
-                cpt++;
-            }
-        }
-        return cpt;
     };
 
     var drawBoard = function () {
@@ -62,17 +52,195 @@ var Engine = function () {
 
     var initialization = function () {
         player = {player1 : 1, player2 : 2};
+        score = {player1 : 0, player2 : 0};
+        nbTokens = {player1 : 25, player2 : 25};
+        previousMovement = {from : {i : "", j : ""}, to : {i : "", j : ""}, value : 0};
         currentPlayer = player.player1;
-        selected = "";
+        selected = {i : "", j : ""};
         nbSelected = 0;
         initializationBoard();
     };
-
+    /*
     var getIJFromStr = function (str) {
         var column = str.charCodeAt(0) - 65;
         var line = str.charCodeAt(1) - 49;
 
         return {"i" : line, "j" : column};
+    };
+    */
+    var switchPlayer = function () {
+        if(currentPlayer === player.player1) {
+            currentPlayer = player.player2;
+        }
+        else {
+            currentPlayer = player.player1;
+        }
+    };
+
+    var attributePoint = function (x, y) {
+        var arraySize = getNumberTokenAtIJ(x, y);
+        if(arraySize >= 5) {
+            if(getTopOfArray(x, y) === 1) {
+                score.player1++;
+            }
+            else {
+                score.player2++;
+            }
+            removeThePile(x, y);
+        }
+    };
+
+    var getNumberTokenAtIJ = function (i, j) {
+        var cpt = 0, k;
+        for (k = 0 ; k < 8 ; k++) {
+            if(board[i][j][k] !== 0) {
+                cpt++;
+            }
+        }
+        return cpt;
+    };
+
+    var getTopOfArray = function (x, y) {
+        var arraySize = getNumberTokenAtIJ(x, y);
+        return board[x][y][arraySize-1];
+    };
+
+    var removeThePile = function (x, y) {
+        var i;
+        var arraySize = getNumberTokenAtIJ(x, y);
+        for(i = 0 ; i < arraySize ; i++) {
+            if(board[x][y][i] === player.player1) {
+                nbTokens.player1++;
+            }
+            else {
+                nbTokens.player2++;
+            }
+            board[x][y][i] = 0;
+        }
+    };
+
+    var putATokenInAnEmptyRoom = function (x, y) {
+        if(isEmpty(x, y)) {
+            board[x][y][0] = currentPlayer;
+            if(currentPlayer === player.player1) {
+                nbTokens.player1--;
+            }
+            else {
+                nbTokens.player2--;
+            }
+            previousMovement = {from : {i : "", j : ""}, to : {i : "", j : ""}, value : 0};
+            return true;
+        }
+        return false;
+    };
+
+    var moveAPileOnAnother = function (x, y) {
+        var i;
+        var selectedArraySize = getNumberTokenAtIJ(selected.i, selected.j);
+        var authorized = authorizedMove(x, y);
+        if(authorized) {
+            for (i = selectedArraySize - nbSelected; i < selectedArraySize; i++) {
+                board[x][y][getNumberTokenAtIJ(x, y)] = board[selected.i][selected.j][i];
+                board[selected.i][selected.j][i] = 0;
+            }
+            previousMovement = {from : {i : selected.i, j : selected.j}, to : {i : x, j : y}, value : nbSelected};
+        }
+        return authorized;
+    };
+
+    var authorizedMove = function (x, y) {
+        var lineMove = horizontalMove(x, y) || verticalMove(x, y) || diagonalMove(x, y);
+        var notReversedMove = notAnUndoMovement(x, y);
+        var notEmptyTarget = !isEmpty(x, y);
+        var rightDistance = sizeIsDistance(x, y);
+        return lineMove && notReversedMove && notEmptyTarget && rightDistance;
+    };
+
+    var isEmpty = function (x, y) {
+        return (getNumberTokenAtIJ(x, y) === 0);
+    };
+
+    var horizontalMove = function (x, y) {
+        var min, max, somethingBetween = 0, j;
+        if(x === selected.i) {
+            if (y < selected.j) {
+                min = y, max = selected.j;
+            }
+            else {
+                min = selected.j, max = y;
+            }
+            for (j = (min + 1); j < max; j++) {
+                somethingBetween += getNumberTokenAtIJ(x, j);
+            }
+            return (somethingBetween === 0);
+        }
+        return false;
+    };
+
+    var verticalMove = function (x, y) {
+        var min, max, somethingBetween = 0, i;
+        if(y === selected.j) {
+            if (x < selected.i) {
+                min = x, max = selected.i;
+            }
+            else {
+                min = selected.i, max = x;
+            }
+            for (i = (min + 1); i < max; i++) {
+                somethingBetween += getNumberTokenAtIJ(i, y);
+            }
+            return (somethingBetween === 0);
+        }
+        return false;
+    };
+
+    var diagonalMove = function (x, y) {
+        var _x = x - selected.i, _y = y - selected.j, i, j, mini, minj, maxi, maxj;
+        var somethingBetween = 0;
+        if(x < selected.i) {
+            mini = x, maxi = selected.i;
+            minj = y, maxj = selected.j;
+        }
+        else {
+            mini = selected.i, maxi = x;
+            minj = selected.j, maxj = y;
+        }
+        if(Math.abs(_x) === Math.abs(_y)) {
+            for(i = (mini+1) ; i < maxi ; i++) {
+                for(j = (minj+1) ; j < maxj ; j++) {
+                    somethingBetween += getNumberTokenAtIJ(i, j);
+                }
+            }
+            return somethingBetween === 0;
+        }
+        else if(Math.abs(_x) === -(Math.abs(_y))) {
+            for(i = (mini+1) ; i < maxi ; i++) {
+                for(j = (minj-1) ; j > maxj ; j--) {
+                    somethingBetween += getNumberTokenAtIJ(i, j);
+                }
+            }
+            return somethingBetween === 0;
+        }
+        return false;
+    };
+
+    var notAnUndoMovement = function (x, y) {
+        return !(x === previousMovement.from.i
+               && y === previousMovement.from.j
+               && selected.i === previousMovement.to.i
+               && selected.j === previousMovement.to.j
+               && nbSelected === previousMovement.value);
+    };
+
+    var sizeIsDistance = function (x, y) {
+        var size = getNumberTokenAtIJ(x, y), length;
+        if(x === selected.i) {
+            length = Math.abs(y - selected.j);
+        }
+        else {
+            length = Math.abs(x - selected.i);
+        }
+        return size === length;
     };
 
 // public methods
@@ -80,34 +248,71 @@ var Engine = function () {
         return currentPlayer;
     };
 
+    this.getBoard = function() {
+        return board;
+    };
+
     this.getCaseBoard = function (i, j, k) {
         return board[i][j][k];
     };
 
-    this.selectToken = function (position, number) {
-        selected = position;
+    this.getNbTokensOfPlayer = function (idPlayer) {
+        if(idPlayer === player.player1) {
+            return nbTokens.player1;
+        }
+        else {
+            return nbTokens.player2;
+        }
+    };
+
+    this.selectToken = function (x, y, number) {
+        selected = {i : x, j : y};
         nbSelected = number;
     };
 
-    this.unselectToken = function () {
-        selected = "";
+    this.deselectToken = function () {
+        selected = {i : "", j : ""};
         nbSelected = 0;
     };
 
-    this.play = function (position) {
-        var pos = getIJFromStr(position), i;
-        if(selected !== "") {
-            var selectedPos = getIJFromStr(selected), tmp;
-            var maxSelectedPos = getNumberTokenAtIJ(selectedPos.i, selectedPos.j);
-            for(i = maxSelectedPos - nbSelected ; i < maxSelectedPos ; i++) {
-                board[pos.i][pos.j][getNumberTokenAtIJ(pos.i, pos.j)] = board[selectedPos.i][selectedPos.j][i];
-                board[selectedPos.i][selectedPos.j][i] = 0;
-            }
+    this.play = function (x, y) {
+        var authorized = false;
+        if(selected.i !== "" && selected.j !== "") {
+            authorized = moveAPileOnAnother(x, y);
+            this.deselectToken();
         }
         else {
-            board[pos.i][pos.j][0] = currentPlayer;
+            authorized = putATokenInAnEmptyRoom(x, y);
         }
-        drawBoard();
+        if(authorized === true) {
+            drawBoard();
+            attributePoint(x, y);
+            switchPlayer();
+        }
+        return authorized;
+    };
+
+    this.getScorePerPlayer = function (idPlayer) {
+        if(idPlayer === player.player1) {
+            return score.player1;
+        }
+        else {
+            return score.player2;
+        }
+    };
+
+    this.doesTheCurrentPlayerWin = function () {
+        if(currentPlayer === player.player1) {
+            if(score.player1 === 5) {
+                return true;
+            }
+        }
+        if(currentPlayer === player.player2) {
+            if(score.player2 === 5) {
+                return true;
+            }
+        }
+        return false;
     };
 
     initialization();

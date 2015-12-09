@@ -1,5 +1,24 @@
 extends layout
 
+block nav
+    li.active
+        a(href='/') Accueil
+    li
+        a(href='/faq') Règles / FAQ
+    li
+        a(href='/contact') Contact
+
 block content
-  h1= title
-  p Welcome to #{title}
+
+
+
+
+    h1.cover-heading Découvrez et gagnez un jeu Mixtour
+        p.lead
+            | Laissez-vous tenter par une nouvelle expérience de jeu ! Mixtour est à la fois ludique et innovant, il vous procurera une grande dose de gaitée et de divertissement. Que vous soyez, débutant, joueur occasionnel ou encore compétiteur, vous trouverez votre rythme.
+            | A l'occasion de la sortie de Mixtour, nous organisons un immense concours !
+            | Êtes-vous prêt à relever le défi ?
+        p.lead
+            a.btn.btn-lg.btn-default(href='/login-registration') Jouer !
+
+block javascripts

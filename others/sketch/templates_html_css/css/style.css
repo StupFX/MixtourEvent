@@ -147,6 +147,31 @@ form input:focus {
   color: #808080;
 }
 
+form textarea.input {
+  background: #FFF;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  width: 100%;
+  text-indent: 10px;
+  height: 300px;
+  padding-top: 10px;
+}
+
+.step {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.4);
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+.step.active {
+  background-color: #FFF;
+}
 
 /*
  * Game page
@@ -173,6 +198,13 @@ form input:focus {
 
 .panel-group .panel-heading+.panel-collapse>.list-group, .panel-group .panel-heading+.panel-collapse>.panel-body {
   border-top: none;
+}
+
+/*
+ * Contact page
+ */
+.contact form {
+  margin: 50px 0;
 }
 
 /* --- RESPONSIVE DESIGN --- */
