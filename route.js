@@ -113,6 +113,10 @@ var notFound404 = function(req, res, next) {
     res.render('404', {title: '404 Not Found'});
 };
 
+var login = function(req, res, next) {
+    res.render('login-registration', {title:'Mixtour Event - Connexion / Inscription'});
+}
+
 // export functions
 /**************************************/
 // index
@@ -137,3 +141,4 @@ module.exports.signOut = signOut;
 module.exports.notFound404 = notFound404;
 
 module.exports.accueil = accueil;
+module.exports.login = login;

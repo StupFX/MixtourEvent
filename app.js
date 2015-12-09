@@ -90,6 +90,9 @@ app.post('/signup', route.signUpPost);
 // GET
 app.get('/signout', route.signOut);
 
+app.get('/login-registration', route.login);
+
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');
