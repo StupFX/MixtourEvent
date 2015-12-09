@@ -3,7 +3,7 @@
 var Engine = function () {
 
 // private attributes and methods
-    var player, currentPlayer, board, selected, nbSelected, score, nbTokens, previousMovement;
+    var player, currentPlayer, board, selected, nbSelected, score, nbTokens, previousMovement, lastAction;
 
     var foreach3D = function (n1, n2, n3, callback) {
         var i, j, k;
@@ -55,19 +55,13 @@ var Engine = function () {
         score = {player1 : 0, player2 : 0};
         nbTokens = {player1 : 25, player2 : 25};
         previousMovement = {from : {i : "", j : ""}, to : {i : "", j : ""}, value : 0};
+        lastAction ="";
         currentPlayer = player.player1;
         selected = {i : "", j : ""};
         nbSelected = 0;
         initializationBoard();
     };
-    /*
-    var getIJFromStr = function (str) {
-        var column = str.charCodeAt(0) - 65;
-        var line = str.charCodeAt(1) - 49;
 
-        return {"i" : line, "j" : column};
-    };
-    */
     var switchPlayer = function () {
         if(currentPlayer === player.player1) {
             currentPlayer = player.player2;
@@ -243,6 +237,24 @@ var Engine = function () {
         return size === length;
     };
 
+    var fromIJToPosition = function (x, y) {
+        var xx = String.fromCharCode(x + 49);
+        var yy = String.fromCharCode(y + 65);
+        return "" + yy + xx;
+    };
+
+    var changeLastAction = function (x, y) {
+        lastAction = "Player " + currentPlayer + " ";
+        if(selected.i !== "" && selected.j !== "") {
+            lastAction += "From ";
+            lastAction += fromIJToPosition(previousMovement.from.i, previousMovement.from.j) + " To ";
+            lastAction += fromIJToPosition(previousMovement.to.i, previousMovement.to.j);
+            lastAction += " : " +previousMovement.value + " Token";
+        } else {
+            lastAction += "Add token to " + fromIJToPosition(x, y);
+        }
+    };
+
 // public methods
     this.getCurrentPlayer = function () {
         return currentPlayer;
@@ -279,10 +291,12 @@ var Engine = function () {
         var authorized = false;
         if(selected.i !== "" && selected.j !== "") {
             authorized = moveAPileOnAnother(x, y);
+            changeLastAction(x, y);
             this.deselectToken();
         }
         else {
             authorized = putATokenInAnEmptyRoom(x, y);
+            changeLastAction(x, y);
         }
         if(authorized === true) {
             drawBoard();
@@ -313,6 +327,21 @@ var Engine = function () {
             }
         }
         return false;
+    };
+
+    this.getLastAction = function () {
+        return lastAction;
+    };
+
+    this.isThereAWinner = function () {
+        var winner = 0;
+        if(score.player1 === 5) {
+            winner = player.player1;
+        }
+        else if(score.player2 === 5) {
+            winner = player.player2;
+        }
+        return winner;
     };
 
     initialization();
