@@ -26,9 +26,7 @@ app.set('view engine', 'jade');
 
 
 
-
-
-passport.use(new LocalStrategy(function(username, password, mail, firtsname, lastname, age, address, postcode, city, country, done) {
+passport.use('signin',new LocalStrategy(function(username, password, done) {
   new Model.User({username: username}).fetch().then(function(data) {
     var user = data;
     if(user === null) {
@@ -38,17 +36,11 @@ passport.use(new LocalStrategy(function(username, password, mail, firtsname, las
       if(!bcrypt.compareSync(password, user.password)) {
         return done(null, false, {message: 'Invalid username or password'});
       } else {
-        if (!mail) {
-          return done(null, false, {message: 'Need mail'});
-        } else {
-          if(!firstname || !lastname || !age || !address || !postcode || !city || !country){
-            return done(null, false, {message: 'Fill all informations'});
-          } else {
             return done(null, user);
           }
         }
-      }
-    }
+
+
   });
 }));
 
