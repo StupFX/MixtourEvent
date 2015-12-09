@@ -36,16 +36,23 @@ html(lang='en')
 
           .mastfoot
             .inner
+              p
+                table(style="text-align:center; margin: auto;")
+                  tr
+                    td
+                      a.twitter-share-button(href='https://twitter.com/share', style='display: inline-block', {count}='', data-url='http://mixtour.arnaudupuy.fr', data-text="Rejoignez moi sur l'évènement Mixtour, une boite de jeu à gagner !", data-via='StupFX') Tweet
+                    td(style="padding-left: 4px; vertical-align: -2px")
+                      #fb-root
+                      .fb-send(data-href='https://www.facebook.com/MixTour-Event-1497673067205002/?fref=ts', style='display: inline-block')
+
               p.socialNetworks
                 a(href='https://www.facebook.com/MixTour-Event-1497673067205002/?fref=ts')
                   i.fa.fa-facebook-square
                 a(href='https://twitter.com/StupFX')
                   i.fa.fa-twitter-square
-                a(href='https://twitter.com/StupFX')
-                  i.fa.fa-google-plus-square
                 a(href='https://www.instagram.com/stupfx/')
                   i.fa.fa-instagram
-              p Création d’un évènement autour du jeu Mixtour, by StupFX
+              p En collaboration avec Dieter Stein (site web), évènement réalisé par StupFX
     //
     // Bootstrap core JavaScript
     // ==================================================
@@ -53,6 +60,17 @@ html(lang='en')
     script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
     // IE10 viewport hack for Surface/desktop Windows 8 bug
     script(src='javascripts/ie10-viewport-bug-workaround.js')
+    script.
+      !function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+    script.
+      (function(d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s); js.id = id;
+      js.src = "//connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v2.5";
+      fjs.parentNode.insertBefore(js, fjs);
+      }(document, 'script', 'facebook-jssdk'));
+
 
     block javascripts
 
