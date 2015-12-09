@@ -94,6 +94,15 @@ var Engine = function () {
         return cpt;
     };
 
+    var getNbTokensOfCurrentPlayer = function () {
+        if(currentPlayer === player.player1) {
+            return nbTokens.player1;
+        }
+        else {
+            return nbTokens.player2;
+        }
+    };
+
     var getTopOfArray = function (x, y) {
         var arraySize = getNumberTokenAtIJ(x, y);
         return board[x][y][arraySize-1];
@@ -114,7 +123,7 @@ var Engine = function () {
     };
 
     var putATokenInAnEmptyRoom = function (x, y) {
-        if(isEmpty(x, y)) {
+        if(isEmpty(x, y) && getNbTokensOfCurrentPlayer() > 0) {
             board[x][y][0] = currentPlayer;
             if(currentPlayer === player.player1) {
                 nbTokens.player1--;
