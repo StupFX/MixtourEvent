@@ -220,6 +220,7 @@ var GUI = function (e, canvas) {
     };
 
     var onMouseMove = function (e) {
+        e.preventDefault();
         if (Mouse.down) {
             if (!Mouse.hasMoved) {
                 Mouse.hasMoved = true;
