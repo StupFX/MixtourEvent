@@ -99,6 +99,10 @@ app.get('/signout', route.signOut);
 
 app.get('/login-registration', route.login);
 
+//game
+//GET
+app.get('/game',route.game);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

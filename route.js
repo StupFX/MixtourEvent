@@ -41,26 +41,26 @@ var signIn = function(req, res, next) {
 // sign in
 // POST
 var signInPost = function(req, res, next) {
-    console.log("on commence a authentifier !!!!!!!!!!!!!!!!!!!!!!!!!!!");
-    passport.authenticate('signin', { successRedirect: '/',
+
+    passport.authenticate('signin', { successRedirect: '/game',
         failureRedirect: '/login-registration'}, function(err, user, info) {
-        console.log("fail 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
         if(err) {
-            console.log("fail 1 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
             return res.render('login-registration', {title: 'Sign In', errorMessage: err.message});
         }
 
         if(!user) {
-            console.log("fail 2 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
             return res.render('login-registration', {title: 'Sign In', errorMessage: info.message});
         }
         return req.logIn(user, function(err) {
             if(err) {
-                console.log("fail 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
                 return res.render('login-registration', {title: 'Sign In', errorMessage: err.message});
             } else {
-                console.log("on a authentifier !!!!!!!!!!!!!!!!!!!!!!!!!!!");
-                return res.redirect('/index');
+
+                return res.redirect('/game');
             }
         });
 
@@ -132,11 +132,19 @@ var login = function(req, res, next) {
 };
 
 var contact = function (req, res, next) {
-  res.render('contact', {title: 'contact'});
+        res.render('contact', {title: 'contact'});
 };
 
 var faq = function (req, res, next) {
-    res.render('faq', {title: 'faq'});
+        res.render('faq', {title: 'faq'});
+};
+
+var game = function (req, res, next) {
+    if(req.isAuthenticated()) {
+        res.render('game',{title: 'game'});
+    }else{
+        res.redirect('/');
+    }
 };
 // export functions
 /**************************************/
@@ -168,3 +176,6 @@ module.exports.login = login;
 module.exports.contact = contact;
 
 module.exports.faq = faq;
+
+module.exports.game = game;
+

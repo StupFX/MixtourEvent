@@ -14,9 +14,23 @@ block content
       .game
 
 block javascripts
+  script(src='Socket.js')
   script.
-    script(src='Socket.js')
-    window.onbeforeunload = function () {
-      if(true) return false;
-      return 'Handler for .unload() called.';
-    };
+      $(document).click(function () {
+        socket.emit('coucou', 'Hello World from client');
+      });
+
+      socket.on('messages', function (data) {
+        idGame = data.idG;
+       
+        var data = { id : idconnexion , idGame : idGame};
+        socket.emit('hi', data);
+      });
+
+      socket.on("howdy", function (data) {
+        alert(data);
+      });
+      window.onbeforeunload = function () {
+        if(true) return false;
+        return 'Handler for .unload() called.';
+      };
