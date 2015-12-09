@@ -12,7 +12,6 @@ var Mouse = {
     hasMoved: false,
     originX: 0,
     originY: 0,
-    origin: ''
 };
 
 var GUI = function (e, canvas) {
@@ -25,7 +24,9 @@ var GUI = function (e, canvas) {
         height,
         tokens = [],
         board = [],
-        tower = [];
+        tower = [],
+        scorePanels = document.getElementsByClassName('score'),
+        playerScores = document.getElementsByClassName('playerScore');
 
     // private methods
     var getNumberTokenAtIJ = function (i, j) {
@@ -39,12 +40,12 @@ var GUI = function (e, canvas) {
     };
 
     var convert = function (xx, yy) {
-        return {x: Math.floor(xx / 101), y: Math.floor(yy / 101)};
+        return {x: Math.floor(yy / 101), y: Math.floor(xx / 101)};
     };
 
-    var coordsToString = function (coords) {
-        return String.fromCharCode(coords.x + 65) + String.fromCharCode(coords.y + 49);
-    };
+    /*var coordsToString = function (coords) {
+     return String.fromCharCode(coords.x + 65) + String.fromCharCode(coords.y + 49);
+     };*/
 
     var loadImages = function () {
         tokens[0] = null;
@@ -67,6 +68,19 @@ var GUI = function (e, canvas) {
 
     var updateBoard = function () {
         board = engine.getBoard();
+    };
+
+    var updateScores = function () {
+        var currentPlayer = engine.getCurrentPlayer();
+        if (currentPlayer == 2) {
+            scorePanels[0].style.opacity = 0.5;
+            scorePanels[1].style.opacity = 1;
+        } else {
+            scorePanels[1].style.opacity = 0.5;
+            scorePanels[0].style.opacity = 1;
+        }
+        playerScores[0].innerHTML = engine.getScorePerPlayer(1);
+        playerScores[1].innerHTML = engine.getScorePerPlayer(2);
     };
 
     var drawEmptyBoard = function () {
@@ -131,8 +145,8 @@ var GUI = function (e, canvas) {
     };
 
     var getClickedToken = function (pixelX, pixelY, coords) {
-        var y = pixelY - (size * coords.y + coords.y),
-            nbToken = getNumberTokenAtIJ(coords.y, coords.x);
+        var y = pixelY - (size * coords.x + coords.x),
+            nbToken = getNumberTokenAtIJ(coords.x, coords.y);
 
         for (var token = 0; token < nbToken; token++) {
             if (token == nbToken - 1) {
@@ -151,8 +165,8 @@ var GUI = function (e, canvas) {
     };
 
     var createTower = function (coords, token) {
-        for (var t = token; t < getNumberTokenAtIJ(coords.y, coords.x); t++) {
-            tower.push(board[coords.y][coords.x][t]);
+        for (var t = token; t < getNumberTokenAtIJ(coords.x, coords.y); t++) {
+            tower.push(board[coords.x][coords.y][t]);
         }
     };
 
@@ -175,7 +189,6 @@ var GUI = function (e, canvas) {
         Mouse.down = true;
         Mouse.originX = x;
         Mouse.originY = y;
-        Mouse.origin = coordsToString(coords);
     };
 
     var onMouseUp = function (e) {
@@ -184,16 +197,9 @@ var GUI = function (e, canvas) {
 
         var coords = convert(x, y);
 
-        if (Mouse.hasMoved) {
-            if (Mouse.origin !== coordsToString(coords)) {
-                engine.play(coordsToString(coords));
-            }
-            engine.deselectToken();
-        }
-        else {
-            engine.play(coordsToString(coords));
-        }
+        engine.play(coords.x, coords.y);
 
+        updateScores();
         updateBoard();
         destroyTower();
         redraw();
@@ -206,7 +212,9 @@ var GUI = function (e, canvas) {
         if (Mouse.down) {
             if (!Mouse.hasMoved) {
                 Mouse.hasMoved = true;
-                engine.selectToken(coordsToString(convert(Mouse.originX, Mouse.originY)), tower.length);
+
+                var coords = convert(Mouse.originX, Mouse.originY);
+                engine.selectToken(coords.x, coords.y, tower.length);
             }
 
             var x = e.clientX - c.offsetLeft,
@@ -239,6 +247,7 @@ var GUI = function (e, canvas) {
         initEventListener();
         create3DBoard();
         updateBoard();
+        updateScores();
 
         drawEmptyBoard();
     };
