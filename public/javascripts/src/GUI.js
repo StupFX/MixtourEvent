@@ -26,7 +26,8 @@ var GUI = function (e, canvas) {
         board = [],
         tower = [],
         scorePanels = document.getElementsByClassName('score'),
-        playerScores = document.getElementsByClassName('playerScore');
+        playerScores = document.getElementsByClassName('playerScore'),
+        lastAction = document.getElementById('details');
 
     // private methods
     var getNumberTokenAtIJ = function (i, j) {
@@ -81,6 +82,15 @@ var GUI = function (e, canvas) {
         }
         playerScores[0].innerHTML = engine.getScorePerPlayer(1);
         playerScores[1].innerHTML = engine.getScorePerPlayer(2);
+    };
+
+    var updateLastAction = function () {
+        lastAction.innerHTML = engine.getLastAction();
+    };
+
+    var updateInfos = function () {
+        updateScores();
+        updateLastAction();
     };
 
     var drawEmptyBoard = function () {
@@ -179,8 +189,6 @@ var GUI = function (e, canvas) {
         var x = e.clientX - $(c).offset().left,
             y = e.clientY - $(c).offset().top;
 
-        console.log(x, y);
-
         var coords = convert(x, y);
         var token = getClickedToken(x, y, coords);
 
@@ -199,11 +207,12 @@ var GUI = function (e, canvas) {
 
         var coords = convert(x, y);
 
-        engine.play(coords.x, coords.y);
+        if (engine.play(coords.x, coords.y)) {
+            updateInfos();
+        }
 
-        updateScores();
-        updateBoard();
         destroyTower();
+        updateBoard();
         redraw();
 
         Mouse.down = false;
