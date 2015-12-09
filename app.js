@@ -28,7 +28,7 @@ app.set('view engine', 'jade');
 
 
 
-passport.use(new LocalStrategy(function(username, password, done) {
+passport.use(new LocalStrategy(function(username, password, mail, firtsname, lastname, age, address, postcode, city, country, done) {
   new Model.User({username: username}).fetch().then(function(data) {
     var user = data;
     if(user === null) {
@@ -38,7 +38,15 @@ passport.use(new LocalStrategy(function(username, password, done) {
       if(!bcrypt.compareSync(password, user.password)) {
         return done(null, false, {message: 'Invalid username or password'});
       } else {
-        return done(null, user);
+        if (!mail) {
+          return done(null, false, {message: 'Need mail'});
+        } else {
+          if(!firstname || !lastname || !age || !address || !postcode || !city || !country){
+            return done(null, false, {message: 'Fill all informations'});
+          } else {
+            return done(null, user);
+          }
+        }
       }
     }
   });
@@ -89,6 +97,8 @@ app.post('/signup', route.signUpPost);
 // logout
 // GET
 app.get('/signout', route.signOut);
+
+app.get('/login-registration', route.login);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
