@@ -41,22 +41,29 @@ var signIn = function(req, res, next) {
 // sign in
 // POST
 var signInPost = function(req, res, next) {
-    passport.authenticate('local', { successRedirect: '/',
+    console.log("on commence a authentifier !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+    passport.authenticate('signin', { successRedirect: '/',
         failureRedirect: '/login-registration'}, function(err, user, info) {
+        console.log("fail 0 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
         if(err) {
+            console.log("fail 1 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
             return res.render('login-registration', {title: 'Sign In', errorMessage: err.message});
         }
 
         if(!user) {
+            console.log("fail 2 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
             return res.render('login-registration', {title: 'Sign In', errorMessage: info.message});
         }
         return req.logIn(user, function(err) {
             if(err) {
+                console.log("fail 3 !!!!!!!!!!!!!!!!!!!!!!!!!!!");
                 return res.render('login-registration', {title: 'Sign In', errorMessage: err.message});
             } else {
-                return res.redirect('/');
+                console.log("on a authentifier !!!!!!!!!!!!!!!!!!!!!!!!!!!");
+                return res.redirect('/index');
             }
         });
+
     })(req, res, next);
 };
 
@@ -86,8 +93,15 @@ var signUpPost = function(req, res, next) {
             //****************************************************//
             var password = user.password;
             var hash = bcrypt.hashSync(password);
-
-            var signUpUser = new Model.User({username: user.username, password: hash});
+            var mail = user.mail;
+            var firstname = user.firstname;
+            var lastname = user.lastname;
+            var age = user.age;
+            var address = user.address;
+            var postcode = user.postcode;
+            var city = user.city;
+            var country = user.country;
+            var signUpUser = new Model.User({username: user.username, password: hash, mail: mail, firstname: firstname, lastname: lastname, age: age, address: address, postcode: postcode, city: city, country: country});
 
             signUpUser.save().then(function(model) {
                 // sign in the newly registered user
