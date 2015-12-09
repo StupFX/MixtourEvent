@@ -15,10 +15,11 @@ var Mouse = {
     origin: ''
 };
 
-var GUI = function (canvas) {
+var GUI = function (e, canvas) {
 
     // private attributes
-    var c,
+    var engine = e,
+        c,
         ctx,
         width,
         height,
@@ -27,6 +28,16 @@ var GUI = function (canvas) {
         tower = [];
 
     // private methods
+    var getNumberTokenAtIJ = function (i, j) {
+        var cpt = 0, k;
+        for (k = 0; k < 8; k++) {
+            if (board[i][j][k] !== 0) {
+                cpt++;
+            }
+        }
+        return cpt;
+    };
+
     var convert = function (xx, yy) {
         return {x: Math.floor(xx / 101), y: Math.floor(yy / 101)};
     };
@@ -43,14 +54,19 @@ var GUI = function (canvas) {
         tokens[2].src = 'whiteToken.png';
     };
 
-    var initBoard = function () {
-        board = [
-            [[], [], [], [], []],
-            [[], [], [], [], []],
-            [[], [], [], [], []],
-            [[], [], [], [], []],
-            [[], [], [], [], []]
-        ];
+    var create3DBoard = function () {
+        board = new Array(boardSize);
+
+        for (var i = 0; i < boardSize; i++) {
+            board[i] = new Array(boardSize);
+            for (var j = 0; j < boardSize; j++) {
+                board[i][j] = new Array(boardDepth);
+            }
+        }
+    };
+
+    var updateBoard = function () {
+        board = engine.getBoard();
     };
 
     var drawEmptyBoard = function () {
@@ -102,9 +118,8 @@ var GUI = function (canvas) {
 
         for (line = 0; line < boardSize; line++) {
             for (col = 0; col < boardSize; col++) {
-                for (token = 0; token < board[line][col].length; token++) {
-                    console.log('!');
-                    drawToken(line, col, token, board[line][col][token]);
+                for (token = 0; token < getNumberTokenAtIJ(line, col); token++) {
+                    drawToken(col, line, token, board[line][col][token]);
                 }
             }
         }
@@ -116,10 +131,11 @@ var GUI = function (canvas) {
     };
 
     var getClickedToken = function (pixelX, pixelY, coords) {
-        var y = pixelY - (size * coords.y + coords.y);
+        var y = pixelY - (size * coords.y + coords.y),
+            nbToken = getNumberTokenAtIJ(coords.y, coords.x);
 
-        for (var token = 0; token < board[coords.x][coords.y].length; token++) {
-            if (token == board[coords.x][coords.y].length - 1) {
+        for (var token = 0; token < nbToken; token++) {
+            if (token == nbToken - 1) {
                 if (y <= 90 - token * step && y > 90 - (token + 1) * step - 30) {
                     return token;
                 }
@@ -135,26 +151,13 @@ var GUI = function (canvas) {
     };
 
     var createTower = function (coords, token) {
-        for (var t = token; t < board[coords.x][coords.y].length; t++) {
-            tower.push(board[coords.x][coords.y][t]);
+        for (var t = token; t < getNumberTokenAtIJ(coords.y, coords.x); t++) {
+            tower.push(board[coords.y][coords.x][t]);
         }
-        return tower;
     };
 
     var destroyTower = function () {
         tower = [];
-    };
-
-    var removeTowerFromBoard = function (x, y) {
-        for (var token = 0; token < tower.length; token++) {
-            board[x][y].pop();
-        }
-    };
-
-    var resetBoard = function (x, y) {
-        for (var token = 0; token < tower.length; token++) {
-            board[x][y].push(tower[token]);
-        }
     };
 
     // init events
@@ -162,12 +165,11 @@ var GUI = function (canvas) {
         var x = e.clientX - c.offsetLeft,
             y = e.clientY - c.offsetTop;
 
-        var coords = convert(x, y),
-            token = getClickedToken(x, y, coords);
+        var coords = convert(x, y);
+        var token = getClickedToken(x, y, coords);
 
         if (token !== null) {
             createTower(coords, token);
-            removeTowerFromBoard(coords.x, coords.y);
         }
 
         Mouse.down = true;
@@ -184,16 +186,16 @@ var GUI = function (canvas) {
 
         if (Mouse.hasMoved) {
             if (Mouse.origin !== coordsToString(coords)) {
-                console.log('play(' + coordsToString(coords) + ');');
+                engine.play(coordsToString(coords));
             }
+            engine.deselectToken();
         }
         else {
-            console.log('play(' + coordsToString(coords) + ');');
+            engine.play(coordsToString(coords));
         }
 
-        resetBoard(coords.x, coords.y);
+        updateBoard();
         destroyTower();
-
         redraw();
 
         Mouse.down = false;
@@ -204,11 +206,7 @@ var GUI = function (canvas) {
         if (Mouse.down) {
             if (!Mouse.hasMoved) {
                 Mouse.hasMoved = true;
-                console.log(
-                    'select('
-                    + coordsToString(convert(Mouse.originX, Mouse.originY))
-                    + ',' + tower.length + ');'
-                );
+                engine.selectToken(coordsToString(convert(Mouse.originX, Mouse.originY)), tower.length);
             }
 
             var x = e.clientX - c.offsetLeft,
@@ -239,7 +237,8 @@ var GUI = function (canvas) {
         loadImages();
 
         initEventListener();
-        initBoard();
+        create3DBoard();
+        updateBoard();
 
         drawEmptyBoard();
     };
