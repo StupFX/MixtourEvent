@@ -51,8 +51,8 @@ var GUI = function (e, canvas) {
         tokens[0] = null;
         tokens[1] = new Image();
         tokens[2] = new Image();
-        tokens[1].src = 'blueToken.png';
-        tokens[2].src = 'whiteToken.png';
+        tokens[1].src = 'img/blueToken.png';
+        tokens[2].src = 'img/whiteToken.png';
     };
 
     var create3DBoard = function () {
@@ -176,8 +176,10 @@ var GUI = function (e, canvas) {
 
     // init events
     var onMouseDown = function (e) {
-        var x = e.clientX - c.offsetLeft,
-            y = e.clientY - c.offsetTop;
+        var x = e.clientX - $(c).offset().left,
+            y = e.clientY - $(c).offset().top;
+
+        console.log(x, y);
 
         var coords = convert(x, y);
         var token = getClickedToken(x, y, coords);
@@ -192,8 +194,8 @@ var GUI = function (e, canvas) {
     };
 
     var onMouseUp = function (e) {
-        var x = e.clientX - c.offsetLeft,
-            y = e.clientY - c.offsetTop;
+        var x = e.clientX - $(c).offset().left,
+            y = e.clientY - $(c).offset().top;
 
         var coords = convert(x, y);
 
@@ -217,8 +219,8 @@ var GUI = function (e, canvas) {
                 engine.selectToken(coords.x, coords.y, tower.length);
             }
 
-            var x = e.clientX - c.offsetLeft,
-                y = e.clientY - c.offsetTop;
+            var x = e.clientX - $(c).offset().left,
+                y = e.clientY - $(c).offset().top;
 
             if (tower.length != 0) {
                 redraw();

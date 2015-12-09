@@ -115,7 +115,11 @@ var notFound404 = function(req, res, next) {
 
 var login = function(req, res, next) {
     res.render('login-registration', {title:'Mixtour Event - Connexion / Inscription'});
-}
+};
+
+var game = function(req, res, next) {
+    res.render('game', {title:'Mixtour Event - Jouer'});
+};
 
 // export functions
 /**************************************/
@@ -142,3 +146,5 @@ module.exports.notFound404 = notFound404;
 
 module.exports.accueil = accueil;
 module.exports.login = login;
+
+module.exports.game = game;

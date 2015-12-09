@@ -11,7 +11,16 @@ block nav
 block content
   .row
     .col-md-12
-      .game
+      #container
+        canvas#board(width='504', height='504')
+        #scorePanel
+          .score.left
+            p Player 1
+            p.playerScore 0
+          .score.right
+            p Player 2
+            p.playerScore 0
+
 
 block javascripts
   script.
@@ -19,3 +28,13 @@ block javascripts
       if(true) return false;
       return 'Handler for .unload() called.';
     };
+
+  script(src='javascripts/src/Engine.js')
+  script(src='javascripts/src/GUI.js')
+  script.
+    window.onload = function () {
+    var board = document.getElementById('board');
+    var engine = new Engine();
+    var Gui = new GUI(engine, board);
+    };
+
