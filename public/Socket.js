@@ -12,7 +12,7 @@ socket.on('connect', function(data) {
 
 socket.on('match', function(data) {
     idconnexion = data;
-    alert( "Votre ID :"+idconnexion);
+    // alert( "Votre ID :"+idconnexion);
 });
 
 /* socket.on("howdy", function (data) {
