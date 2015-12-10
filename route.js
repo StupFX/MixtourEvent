@@ -66,7 +66,7 @@ var signInPost = function(req, res, next) {
             if(err) {
                 return res.render('login-registration', {title: 'Sign In', errorMessage: err.message});
             } else {
-                return res.redirect('/game');
+                return res.redirect('/accueil');
             }
         });
 
@@ -165,9 +165,10 @@ var admin = function(req, res, next){
                     return;
                 }
 
-                mySqlClient.end();
 
                 res.render('admin', {title: 'Home', users: results});
+
+
             }
         );
     }
