@@ -18,7 +18,7 @@ node_modules/
 
 MySQL:
 ```
-dro database if exists dbUsers;
+drop database if exists dbUsers;
 
 create database if not exists dbUsers;
 
@@ -38,6 +38,6 @@ create table if not exists tblUsers(
     postcode CHAR(5) NOT NULL,
     city VARCHAR(30) NOT NULL,
     country VARCHAR(30) NOT NULL,
-    nbPoint INT(5) 
+    nbPoint INT(5) DEFAULT 0
 )engine=innodb;
 ```
