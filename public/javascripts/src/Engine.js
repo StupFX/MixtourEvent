@@ -308,10 +308,10 @@ var Engine = function () {
             changeLastAction(x, y);
         }
         if(authorized === true) {
-            drawBoard();
             attributePoint(x, y);
             switchPlayer();
         }
+        // drawBoard();
         return authorized;
     };
 
