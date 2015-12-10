@@ -29,7 +29,8 @@ var GUI = function (e, s, canvas) {
         tower = [],
         scorePanels = document.getElementsByClassName('score'),
         playerScores = document.getElementsByClassName('playerScore'),
-        lastAction = document.getElementById('details');
+        lastAction = document.getElementById('details'),
+        wait = document.getElementById('wait');
 
     // private methods
     var getNumberTokenAtIJ = function (i, j) {
@@ -107,6 +108,11 @@ var GUI = function (e, s, canvas) {
 
     var updateLastAction = function () {
         lastAction.innerHTML = engine.getLastAction();
+        if (idconnexion != engine.getCurrentPlayer() - 1) {
+            wait.innerHTML = 'Veuillez patienter...';
+        } else {
+            wait.innerHTML = 'C\'est votre tour';
+        }
     };
 
     var updateInfos = function () {
@@ -316,7 +322,7 @@ var GUI = function (e, s, canvas) {
         initEventListener();
         create3DBoard();
         updateBoard();
-        updateScores();
+        updateInfos();
 
         drawEmptyBoard();
     };

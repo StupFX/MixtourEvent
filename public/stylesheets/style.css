@@ -254,6 +254,10 @@ form textarea.input {
   text-shadow: none;
 }
 
+#wait {
+  font-weight: bold !important;
+}
+
 .left {
   color: #0087ff;
   text-shadow: 0 0 10px rgba(255,255,255,0.5);
