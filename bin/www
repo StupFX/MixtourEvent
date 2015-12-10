@@ -118,7 +118,7 @@ io.on('connection', function(socket){
 
             CurrentGame[idGame].P1.emit('messages',{message: 'On a trouvé un adversaire'  ,idG : idGame});
             CurrentGame[idGame].P2.emit('messages',{message: 'On a trouvé un adversaire' ,idG : idGame});
-            idGame++;
+            gameCount++;
             Matchmaking.shift();
             Matchmaking.shift();
             idCount = Matchmaking.length;
@@ -126,19 +126,6 @@ io.on('connection', function(socket){
         }
     });
 
-    /* socket.on('coucou', function (data) {
-        console.log("mesage"+data);
-    });
-
-    socket.on('hi', function(data) {
-        console.log ("Joueur:"+data.id+" "+data.idGame);
-        if (data.id % 2 != 0) {
-            CurrentGame[data.idGame].P1.emit('howdy', "howdy how !!");
-        }
-        else {
-            CurrentGame[data.idGame].P2.emit('howdy', "howdy how !!");
-        }
-    }); */
 
     socket.on('play', function(data) {
         if (data.id % 2 != 0) {
