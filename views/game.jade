@@ -38,15 +38,14 @@ block content
 
 
 block javascripts
-  script(src='Socket.js')
   script(src='javascripts/src/Engine.js')
   script(src='javascripts/src/GUI.js')
+  script(src='Socket.js')
   script.
     window.onload = function () {
       var board = document.getElementById('board');
       var engine = new Engine();
-      var Gui = new GUI(engine, board);
-    };
+      var Gui = new GUI(engine, socket, board);
 
       $(document).click(function () {
         socket.emit('coucou', 'Hello World from client');
@@ -54,14 +53,26 @@ block javascripts
 
       socket.on('messages', function (data) {
         idGame = data.idG;
-       
+
         var data = { id : idconnexion , idGame : idGame};
         socket.emit('hi', data);
       });
 
-      socket.on("howdy", function (data) {
-        alert(data);
+      socket.on('opponentPlays', function (data) {
+        engine.play(data.x, data.y);
+        engine.deselectToken();
+        Gui.repaint();
       });
+
+      socket.on('opponentPlaysWrong', function () {
+        engine.deselectToken();
+        Gui.repaint();
+      });
+
+      socket.on('opponentMoves', function (data) {
+        engine.selectToken(data.x, data.y, data.nbToken);
+      });
+    };
 
     window.onbeforeunload = function () {
       if(true) return false;

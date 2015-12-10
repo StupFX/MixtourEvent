@@ -132,9 +132,38 @@ io.on('connection', function(socket){
 
     socket.on('hi', function(data) {
         console.log ("Joueur:"+data.id+" "+data.idGame);
-        if (data.id % 2 == 0)
+        if (data.id % 2 != 0) {
             CurrentGame[data.idGame].P1.emit('howdy', "howdy how !!");
-        else
+        }
+        else {
             CurrentGame[data.idGame].P2.emit('howdy', "howdy how !!");
+        }
+    });
+
+    socket.on('play', function(data) {
+        if (data.id % 2 != 0) {
+            CurrentGame[data.idGame].P1.emit('opponentPlays', {x: data.x, y: data.y});
+        }
+        else {
+            CurrentGame[data.idGame].P2.emit('opponentPlays', {x: data.x, y: data.y});
+        }
+    });
+
+    socket.on('wrongPlay', function(data) {
+        if (data.id % 2 != 0) {
+            CurrentGame[data.idGame].P1.emit('opponentPlaysWrong');
+        }
+        else {
+            CurrentGame[data.idGame].P2.emit('opponentPlaysWrong');
+        }
+    });
+
+    socket.on('move', function(data) {
+        if (data.id % 2 != 0) {
+            CurrentGame[data.idGame].P1.emit('opponentMoves', {x: data.x, y: data.y, nbToken: data.nbToken});
+        }
+        else {
+            CurrentGame[data.idGame].P2.emit('opponentMoves', {x: data.x, y: data.y, nbToken: data.nbToken});
+        }
     });
 });

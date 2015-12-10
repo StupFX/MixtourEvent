@@ -11,13 +11,14 @@ var Mouse = {
     down: false,
     hasMoved: false,
     originX: 0,
-    originY: 0,
+    originY: 0
 };
 
-var GUI = function (e, canvas) {
+var GUI = function (e, s, canvas) {
 
     // private attributes
     var engine = e,
+        socket = s,
         c,
         ctx,
         width,
@@ -254,8 +255,15 @@ var GUI = function (e, canvas) {
 
         var coords = convert(x, y);
 
-        if (engine.play(coords.x, coords.y)) {
-            updateInfos();
+        if (idconnexion == engine.getCurrentPlayer() - 1) {
+            if (engine.play(coords.x, coords.y)) {
+                var data = {x: coords.x, y: coords.y, id: idconnexion, idGame: idGame};
+                socket.emit('play', data);
+                updateInfos();
+            } else {
+                var data = {id: idconnexion, idGame: idGame};
+                socket.emit('wrongPlay', data);
+            }
         }
 
         redraw();
@@ -269,6 +277,10 @@ var GUI = function (e, canvas) {
                 Mouse.hasMoved = true;
 
                 var coords = convert(Mouse.originX, Mouse.originY);
+
+                var data = {x: coords.x, y: coords.y, nbToken: tower.length, id : idconnexion , idGame : idGame};
+                socket.emit('move', data);
+
                 engine.selectToken(coords.x, coords.y, tower.length);
                 hideTokens(coords);
             }
@@ -310,6 +322,10 @@ var GUI = function (e, canvas) {
     };
 
     // public methods
+    this.repaint = function () {
+        redraw();
+        updateInfos();
+    };
 
     init(canvas);
 };
