@@ -24,6 +24,7 @@ var GUI = function (e, canvas) {
         height,
         tokens = [],
         board = [],
+        tmpBoard = [],
         tower = [],
         scorePanels = document.getElementsByClassName('score'),
         playerScores = document.getElementsByClassName('playerScore'),
@@ -63,6 +64,25 @@ var GUI = function (e, canvas) {
             board[i] = new Array(boardSize);
             for (var j = 0; j < boardSize; j++) {
                 board[i][j] = new Array(boardDepth);
+            }
+        }
+
+        tmpBoard = new Array(boardSize);
+
+        for (var i = 0; i < boardSize; i++) {
+            tmpBoard[i] = new Array(boardSize);
+            for (var j = 0; j < boardSize; j++) {
+                tmpBoard[i][j] = new Array(boardDepth);
+            }
+        }
+    };
+
+    var copy3DBoard = function () {
+        for (var i = 0; i < boardSize; i++) {
+            for (var j = 0; j < boardSize; j++) {
+                for (var k = 0; k < boardDepth; k++) {
+                    tmpBoard[i][j][k] = board[i][j][k];
+                }
             }
         }
     };
@@ -149,6 +169,20 @@ var GUI = function (e, canvas) {
         }
     };
 
+    var drawBoardWithHiddenTokens = function () {
+        var line, col, token;
+
+        for (line = 0; line < boardSize; line++) {
+            for (col = 0; col < boardSize; col++) {
+                for (token = 0; token < getNumberTokenAtIJ(line, col); token++) {
+                    if (tmpBoard[line][col][token] != 0) {
+                        drawToken(col, line, token, tmpBoard[line][col][token]);
+                    }
+                }
+            }
+        }
+    };
+
     var redraw = function () {
         drawEmptyBoard();
         drawBoard();
@@ -172,6 +206,16 @@ var GUI = function (e, canvas) {
         }
 
         return null;
+    };
+
+    var hideTokens = function (coords) {
+        var nbToken = getNumberTokenAtIJ(coords.x, coords.y);
+
+        copy3DBoard();
+
+        for (var token = nbToken - tower.length; token < nbToken; token++) {
+            tmpBoard[coords.x][coords.y][token] = 0;
+        }
     };
 
     var createTower = function (coords, token) {
@@ -202,6 +246,9 @@ var GUI = function (e, canvas) {
     };
 
     var onMouseUp = function (e) {
+        Mouse.down = false;
+        Mouse.hasMoved = false;
+
         var x = e.clientX - $(c).offset().left,
             y = e.clientY - $(c).offset().top;
 
@@ -211,12 +258,8 @@ var GUI = function (e, canvas) {
             updateInfos();
         }
 
-        destroyTower();
-        updateBoard();
         redraw();
-
-        Mouse.down = false;
-        Mouse.hasMoved = false;
+        destroyTower();
     };
 
     var onMouseMove = function (e) {
@@ -227,13 +270,15 @@ var GUI = function (e, canvas) {
 
                 var coords = convert(Mouse.originX, Mouse.originY);
                 engine.selectToken(coords.x, coords.y, tower.length);
+                hideTokens(coords);
             }
 
             var x = e.clientX - $(c).offset().left,
                 y = e.clientY - $(c).offset().top;
 
             if (tower.length != 0) {
-                redraw();
+                drawEmptyBoard();
+                drawBoardWithHiddenTokens();
                 drawTower(x, y);
             }
         }
