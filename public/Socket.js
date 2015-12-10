@@ -15,10 +15,9 @@ socket.on('match', function(data) {
     alert( "Votre ID :"+idconnexion);
 });
 
-socket.on("howdy", function (data) {
+/* socket.on("howdy", function (data) {
     alert(data);
-
-});
+}); */
 
 
 

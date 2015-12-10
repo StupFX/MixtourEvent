@@ -106,9 +106,9 @@ io.on('connection', function(socket){
 
         Matchmaking[id] = this;
         socket.emit('match', id);
-        console.log("ON STOCK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+Matchmaking.length +" "+id);
+        //console.log("ON STOCK !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"+Matchmaking.length +" "+id);
         if(Matchmaking.length >=2 ){
-            console.log("match !!");
+            //console.log("match !!");
             var player1 = Matchmaking[0];
             var player2 = Matchmaking[1];
 
@@ -126,7 +126,7 @@ io.on('connection', function(socket){
         }
     });
 
-    socket.on('coucou', function (data) {
+    /* socket.on('coucou', function (data) {
         console.log("mesage"+data);
     });
 
@@ -138,7 +138,7 @@ io.on('connection', function(socket){
         else {
             CurrentGame[data.idGame].P2.emit('howdy', "howdy how !!");
         }
-    });
+    }); */
 
     socket.on('play', function(data) {
         if (data.id % 2 != 0) {

@@ -311,7 +311,7 @@ var Engine = function () {
             attributePoint(x, y);
             switchPlayer();
         }
-        drawBoard();
+        // drawBoard();
         return authorized;
     };
 

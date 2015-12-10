@@ -47,15 +47,15 @@ block javascripts
       var engine = new Engine();
       var Gui = new GUI(engine, socket, board);
 
-      $(document).click(function () {
+      /* $(document).click(function () {
         socket.emit('coucou', 'Hello World from client');
-      });
+      }); */
 
       socket.on('messages', function (data) {
         idGame = data.idG;
 
         var data = { id : idconnexion , idGame : idGame};
-        socket.emit('hi', data);
+        // socket.emit('hi', data);
       });
 
       socket.on('opponentPlays', function (data) {
