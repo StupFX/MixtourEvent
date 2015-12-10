@@ -22,13 +22,14 @@ block content
         th Pays
         th Points
     tbody
-      tr
-        td #{user.username}
-        td #{user.firstname}
-        td #{user.lastname}
-        td #{user.age}
-        td #{user.address}
-        td #{user.postcode}
-        td #{user.city}
-        td #{user.country}
-        td #{user.nbPoint}
+      each user in users
+        tr
+          td #{user.username}
+          td #{user.firstname}
+          td #{user.lastname}
+          td #{user.age}
+          td #{user.address}
+          td #{user.postcode}
+          td #{user.city}
+          td #{user.country}
+          td #{user.nbPoint}

@@ -5,10 +5,18 @@
 var passport = require('passport');
 var bcrypt = require('bcrypt-nodejs');
 
-var userinfo;
 // custom library
 // model
 var Model = require('./model');
+
+var mysql = require('mysql');
+
+var mySqlClient = mysql.createConnection({
+    host     : "localhost",
+    user     : "root",
+    password : "toto",
+    database : "dbUsers"
+});
 
 // index
 var index = function(req, res, next) {
@@ -135,19 +143,31 @@ var game = function(req, res, next) {
     res.render('game', {title:'Mixtour Event - Jouer'});
 };
 
+
 var admin = function(req, res, next){
     if(!req.isAuthenticated()) {
         res.redirect('/accueil');
     } else {
+        var selectQuery = 'select username, firstname, lastname, age, address, postcode, city, country FROM tblUsers';
 
-        var user = req.user;
+        mySqlClient.query(
+            selectQuery,
+            function select(error, results, fields) {
+                if (error) {
+                    console.log(error);
+                    mySqlClient.end();
+                    return;
+                }
 
-        if(user !== undefined) {
-            user = user.toJSON();
-        }
-        res.render('admin', {title: 'Home', user: user});
+                mySqlClient.end();
+
+                res.render('admin', {title: 'Home', users: results});
+            }
+        );
     }
 };
+
+
 
 // export functions
 /**************************************/
