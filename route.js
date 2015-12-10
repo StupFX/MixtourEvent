@@ -107,7 +107,7 @@ var signUpPost = function(req, res, next) {
             var postcode = user.postcode;
             var city = user.city;
             var country = user.country;
-            var nbPoint = user.nbPoint;
+            var nbPoint = 0;
             var signUpUser = new Model.User({username: user.username, password: hash, mail: mail, firstname: firstname, lastname: lastname, age: age, address: address, postcode: postcode, city: city, country: country, nbPoint: nbPoint});
             signUpUser.save().then(function(model) {
                 // sign in the newly registered user
@@ -154,7 +154,7 @@ var admin = function(req, res, next){
     if(!req.isAuthenticated()) {
         res.redirect('/accueil');
     } else {
-        var selectQuery = 'select username, firstname, lastname, age, address, postcode, city, country FROM tblUsers';
+        var selectQuery = 'select username, firstname, lastname, age, address, postcode, city, country, nbPoint FROM tblUsers';
 
         mySqlClient.query(
             selectQuery,
