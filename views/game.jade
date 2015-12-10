@@ -38,18 +38,33 @@ block content
 
 
 block javascripts
-  script.
-    window.onbeforeunload = function () {
-      if(true) return false;
-      return 'Handler for .unload() called.';
-    };
-
+  script(src='Socket.js')
   script(src='javascripts/src/Engine.js')
   script(src='javascripts/src/GUI.js')
   script.
     window.onload = function () {
-    var board = document.getElementById('board');
-    var engine = new Engine();
-    var Gui = new GUI(engine, board);
+      var board = document.getElementById('board');
+      var engine = new Engine();
+      var Gui = new GUI(engine, board);
+    };
+
+      $(document).click(function () {
+        socket.emit('coucou', 'Hello World from client');
+      });
+
+      socket.on('messages', function (data) {
+        idGame = data.idG;
+       
+        var data = { id : idconnexion , idGame : idGame};
+        socket.emit('hi', data);
+      });
+
+      socket.on("howdy", function (data) {
+        alert(data);
+      });
+
+    window.onbeforeunload = function () {
+      if(true) return false;
+      return 'Handler for .unload() called.';
     };
 

@@ -86,6 +86,13 @@ app.get('/signup', route.signUp);
 // POST
 app.post('/signup', route.signUpPost);
 
+//Contact
+app.get('/contact',route.contact);
+
+// faq
+
+app.get('/faq',route.faq);
+
 // logout
 // GET
 app.get('/signout', route.signOut);
