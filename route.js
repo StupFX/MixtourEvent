@@ -128,7 +128,11 @@ var notFound404 = function(req, res, next) {
 };
 
 var login = function(req, res, next) {
-    res.render('login-registration', {title:'Mixtour Event - Connexion / Inscription'});
+    if(req.isAuthenticated()) {
+        res.render('game', {title:'Mixtour Event - Jouer'});
+    }else{
+        res.render('login-registration', {title:'Mixtour Event - Connexion / Inscription'});
+    }
 };
 
 var contact = function (req, res, next) {
@@ -136,8 +140,8 @@ var contact = function (req, res, next) {
 };
 
 var faq = function (req, res, next) {
-        res.render('faq', {title: 'faq'});
-
+    res.render('faq', {title: 'faq'});
+};
 
 
 var game = function (req, res, next) {
@@ -171,7 +175,6 @@ module.exports.signOut = signOut;
 module.exports.notFound404 = notFound404;
 
 module.exports.accueil = accueil;
-
 
 module.exports.login = login;
 
