@@ -154,7 +154,7 @@ var admin = function(req, res, next){
     if(!req.isAuthenticated()) {
         res.redirect('/accueil');
     } else {
-        var selectQuery = 'select username, firstname, lastname, age, address, postcode, city, country, nbPoint FROM tblUsers';
+        var selectQuery = 'select username, firstname, lastname, age, address, postcode, city, country, nbPoint FROM tblUsers ORDER BY nbPoint DESC';
 
         mySqlClient.query(
             selectQuery,
@@ -164,15 +164,13 @@ var admin = function(req, res, next){
                     mySqlClient.end();
                     return;
                 }
-
-
                 res.render('admin', {title: 'Home', users: results});
-
-
             }
         );
     }
 };
+
+
 
 var game = function (req, res, next) {
     if(req.isAuthenticated()) {
