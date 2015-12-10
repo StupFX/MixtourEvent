@@ -32,6 +32,7 @@ passport.use('signin',new LocalStrategy(function(username, password, done) {
     if(user === null) {
       return done(null, false, {message: 'Invalid username or password'});
     } else {
+
       user = data.toJSON();
       if(!bcrypt.compareSync(password, user.password)) {
         return done(null, false, {message: 'Invalid username or password'});
@@ -39,8 +40,6 @@ passport.use('signin',new LocalStrategy(function(username, password, done) {
             return done(null, user);
           }
         }
-
-
   });
 }));
 
@@ -102,6 +101,8 @@ app.get('/login-registration', route.login);
 // game
 // GET
 app.get('/game', route.game);
+
+app.get('/admin', route.admin);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -9,6 +9,15 @@ var bcrypt = require('bcrypt-nodejs');
 // model
 var Model = require('./model');
 
+var mysql = require('mysql');
+
+var mySqlClient = mysql.createConnection({
+    host     : "localhost",
+    user     : "root",
+    password : "toto",
+    database : "dbUsers"
+});
+
 // index
 var index = function(req, res, next) {
     if(!req.isAuthenticated()) {
@@ -41,7 +50,6 @@ var signIn = function(req, res, next) {
 // sign in
 // POST
 var signInPost = function(req, res, next) {
-
     passport.authenticate('signin', { successRedirect: '/game',
         failureRedirect: '/login-registration'}, function(err, user, info) {
 
@@ -56,10 +64,8 @@ var signInPost = function(req, res, next) {
         }
         return req.logIn(user, function(err) {
             if(err) {
-
                 return res.render('login-registration', {title: 'Sign In', errorMessage: err.message});
             } else {
-
                 return res.redirect('/game');
             }
         });
@@ -101,8 +107,8 @@ var signUpPost = function(req, res, next) {
             var postcode = user.postcode;
             var city = user.city;
             var country = user.country;
-            var signUpUser = new Model.User({username: user.username, password: hash, mail: mail, firstname: firstname, lastname: lastname, age: age, address: address, postcode: postcode, city: city, country: country});
-
+            var nbPoint = user.nbPoint;
+            var signUpUser = new Model.User({username: user.username, password: hash, mail: mail, firstname: firstname, lastname: lastname, age: age, address: address, postcode: postcode, city: city, country: country, nbPoint: nbPoint});
             signUpUser.save().then(function(model) {
                 // sign in the newly registered user
                 signInPost(req, res, next);
@@ -144,6 +150,29 @@ var faq = function (req, res, next) {
 };
 
 
+var admin = function(req, res, next){
+    if(!req.isAuthenticated()) {
+        res.redirect('/accueil');
+    } else {
+        var selectQuery = 'select username, firstname, lastname, age, address, postcode, city, country FROM tblUsers';
+
+        mySqlClient.query(
+            selectQuery,
+            function select(error, results, fields) {
+                if (error) {
+                    console.log(error);
+                    mySqlClient.end();
+                    return;
+                }
+
+                mySqlClient.end();
+
+                res.render('admin', {title: 'Home', users: results});
+            }
+        );
+    }
+};
+
 var game = function (req, res, next) {
     if(req.isAuthenticated()) {
         res.render('game', {title:'Mixtour Event - Jouer'});
@@ -178,10 +207,8 @@ module.exports.accueil = accueil;
 
 module.exports.login = login;
 
+module.exports.game = game;
+module.exports.admin = admin;
 module.exports.contact = contact;
 
 module.exports.faq = faq;
-
-
-module.exports.game = game;
-
